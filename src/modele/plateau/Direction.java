@@ -24,4 +24,14 @@ public enum Direction {
         }
     }
 
+    public Direction opossee() {
+        switch (this) {
+            case North: return South;
+            case South: return North;
+            case East: return West;
+            case West: return East;
+            default: return North;
+        }
+    }
+
 }
