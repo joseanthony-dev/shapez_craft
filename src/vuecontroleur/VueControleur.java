@@ -97,9 +97,11 @@ public class VueControleur extends JFrame implements Observer {
                 iP.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        mousePressed = false;
-                        jeu.press(xx, yy);
-                        System.out.println(xx + "-" + yy);
+                        if (e.getButton() == MouseEvent.BUTTON3) {
+                            mousePressed = false;
+                            jeu.tournerMachine(xx,yy);
+                            System.out.println(xx + "-" + yy);
+                        }
                     }
 
                     @Override
@@ -111,8 +113,10 @@ public class VueControleur extends JFrame implements Observer {
 
                     @Override
                     public void mousePressed(MouseEvent e) {
-                        mousePressed = true;
-                        jeu.press(xx, yy);
+                        if (e.getButton() == MouseEvent.BUTTON1) {
+                            mousePressed = true;
+                            jeu.press(xx, yy);
+                        }
                     }
 
                     @Override
