@@ -24,7 +24,7 @@ public enum Direction {
         }
     }
 
-    public Direction opossee() {
+    public Direction direction_opossee() {
         switch (this) {
             case North: return South;
             case South: return North;
