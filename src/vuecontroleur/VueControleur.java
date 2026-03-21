@@ -30,7 +30,10 @@ public class VueControleur extends JFrame implements Observer {
     private static final int pxCase = 82; // nombre de pixel par case
     // icones affichées dans la grille
     private Image icoRouge;
+    // Définission des icônes selon l'orientation
     private Image icoTapisDroite;
+    private Image icoTapisGauche;
+    private Image icoTapisHaut;
     private Image icoPoubelle;
     private Image icoMine;
 
@@ -60,14 +63,16 @@ public class VueControleur extends JFrame implements Observer {
     private void chargerLesIcones() {
 
         icoRouge = new ImageIcon("./data/sprites/colors/blue.png").getImage();
-        icoTapisDroite = new ImageIcon("./data/sprites/buildings/belt_top.png").getImage();
 
         icoPoubelle = new ImageIcon("./data/sprites/buildings/trash.png").getImage();
         icoMine = new ImageIcon("./data/sprites/buildings/miner.png").getImage();
 
+        // Icônes pour les différents tapis
+        icoTapisGauche = new ImageIcon("./data/sprites/buildings/belt_left.png").getImage();
+        icoTapisDroite = new ImageIcon("./data/sprites/buildings/belt_right.png").getImage();
+        icoTapisHaut = new ImageIcon("./data/sprites/buildings/belt_top.png").getImage();
+
     }
-
-
 
     private void placerLesComposantsGraphiques() {
         setTitle("ShapeCraft");
@@ -164,9 +169,21 @@ public class VueControleur extends JFrame implements Observer {
                 Machine m = c.getMachine();
 
                 if (m != null) {
-
                     if (m instanceof Tapis) {
-                        tabIP[x][y].setBackground(icoTapisDroite);
+                        switch (m.getDirection()) {
+                            case North:
+                                tabIP[x][y].setBackground(icoTapisHaut);
+                                break;
+                            case East:
+                                tabIP[x][y].setBackground(icoTapisDroite);
+                                break;
+                            case West:
+                                tabIP[x][y].setBackground(icoTapisGauche);
+                                break;
+                            case South:
+                                tabIP[x][y].setBackground(icoTapisHaut); // on reutilise le haut pour l'instant
+                                break;
+                        }
                     } else if (m instanceof Poubelle) {
                         tabIP[x][y].setBackground(icoPoubelle);
                     } else if (m instanceof Mine) {
