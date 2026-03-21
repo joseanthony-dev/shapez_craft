@@ -8,9 +8,8 @@ import modele.item.ItemShape;
 
 public class Jeu extends Thread{
     private Plateau plateau;
-
-
-
+    //On initialise l'outil de départ qui sera le tapis
+    private Outil outilSelectionne = Outil.TAPIS;
 
     public Jeu() {
         plateau = new Plateau();
@@ -26,14 +25,64 @@ public class Jeu extends Thread{
         return plateau;
     }
 
-
-    public void press(int x, int y) {
-
-        plateau.setMachine(x, y, new Tapis());
+    /**
+     * Permet de retourner (connaitre) l'outil actuellement utilisé
+     * @return une énumération d'outil, l'outil actuellement en cours
+     */
+    public Outil getOutilSelectionne() {
+        return outilSelectionne;
     }
 
+    /**
+     * Permet de mettre à jour la variable outil pour un nouvel outil sélectionné
+     * @param outil définira le nouvel outil utilisé
+     */
+    public void setOutilSelectionne(Outil outil) {
+        this.outilSelectionne = outil;
+    }
+
+    /**
+     * Permet maintenant en fonction de l'outil choisit de poser un tapis, une mine, une poubelle ou bien de faire disparaitre la machine
+     * @param x indique la coordonnée x de la case du plateau
+     * @param y indique la coordonnée y de la case du plateau
+     */
+    public void press(int x, int y) {
+        switch (outilSelectionne) {
+            case TAPIS:
+                plateau.setMachine(x, y, new Tapis());
+                break;
+            case MINE:
+                plateau.setMachine(x, y, new Mine());
+                break;
+            case POUBELLE:
+                plateau.setMachine(x, y, new Poubelle());
+                break;
+            case SUPPRIMER:
+                plateau.setMachine(x, y, null);
+                break;
+        }
+    }
+
+    /**
+     * Permet maintenant en fonction de l'outil choisit de poser un tapis, une mine, une poubelle ou bien de faire disparaitre la machine si le clic est maintenu
+     * @param x indique la coordonnée x de la case du plateau
+     * @param y indique la coordonnée y de la case du plateau
+     */
     public void slide(int x, int y) {
-        plateau.setMachine(x, y, new Tapis());
+        switch (outilSelectionne) {
+            case TAPIS:
+                plateau.setMachine(x, y, new Tapis());
+                break;
+            case MINE:
+                plateau.setMachine(x, y, new Mine());
+                break;
+            case POUBELLE:
+                plateau.setMachine(x, y, new Poubelle());
+                break;
+            case SUPPRIMER:
+                plateau.setMachine(x, y, null);
+                break;
+        }
     }
 
 
