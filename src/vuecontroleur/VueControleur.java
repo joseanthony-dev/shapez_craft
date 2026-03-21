@@ -34,6 +34,7 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoTapisDroite;
     private Image icoTapisGauche;
     private Image icoTapisHaut;
+    private Image icoTapisBas;
     private Image icoPoubelle;
     private Image icoMine;
 
@@ -68,9 +69,10 @@ public class VueControleur extends JFrame implements Observer {
         icoMine = new ImageIcon("./data/sprites/buildings/miner.png").getImage();
 
         // Icônes pour les différents tapis
-        icoTapisGauche = new ImageIcon("./data/sprites/buildings/belt_left.png").getImage();
-        icoTapisDroite = new ImageIcon("./data/sprites/buildings/belt_right.png").getImage();
+        icoTapisGauche = new ImageIcon("./data/sprites/buildings/belt_left_straight.png").getImage();
+        icoTapisDroite = new ImageIcon("./data/sprites/buildings/belt_right_straight.png").getImage();
         icoTapisHaut = new ImageIcon("./data/sprites/buildings/belt_top.png").getImage();
+        icoTapisBas = new ImageIcon("./data/sprites/buildings/belt_bottom.png").getImage();
 
     }
 
@@ -185,7 +187,7 @@ public class VueControleur extends JFrame implements Observer {
                                 tabIP[x][y].setBackground(icoTapisGauche);
                                 break;
                             case South:
-                                tabIP[x][y].setBackground(icoTapisHaut); // on reutilise le haut pour l'instant
+                                tabIP[x][y].setBackground(icoTapisBas);
                                 break;
                         }
                     } else if (m instanceof Poubelle) {
