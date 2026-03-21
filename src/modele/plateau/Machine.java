@@ -39,6 +39,14 @@ public abstract class Machine implements Runnable {
         d = d.direction_suivante();
     }
 
+    /**
+     * Permet de retourner la direction de la machine, on fera des affichages différents en fonction
+     * @return
+     */
+    public Direction getDirection() {
+        return d;
+    }
+
     public void send() // la machine dépose un item sur sa ou ses sorties
     {
         Case up = c.plateau.getCase(c, d); // On envoit désormais suivant la direction
