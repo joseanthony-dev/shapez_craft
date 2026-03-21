@@ -5,6 +5,7 @@ import modele.plateau.Plateau;
 import modele.plateau.Poubelle;
 import modele.plateau.Tapis;
 import modele.item.ItemShape;
+import modele.plateau.Machine;
 
 public class Jeu extends Thread{
     private Plateau plateau;
@@ -39,6 +40,18 @@ public class Jeu extends Thread{
      */
     public void setOutilSelectionne(Outil outil) {
         this.outilSelectionne = outil;
+    }
+
+    /**
+     * Méthode permettant de faire pivoter une machine dans toute les directions
+     * @param x
+     * @param y
+     */
+    public void tournerMachine(int x, int y) {
+        Machine m = plateau.getCases()[x][y].getMachine();
+        if (m != null) {
+            m.tourner();
+        }
     }
 
     /**
