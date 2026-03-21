@@ -34,9 +34,14 @@ public abstract class Machine implements Runnable {
         }
     }
 
+    // On définit la fonction tourner qui fait le changement de direction
+    public void tourner() {
+        d = d.direction_suivante();
+    }
+
     public void send() // la machine dépose un item sur sa ou ses sorties
     {
-        Case up = c.plateau.getCase(c, Direction.North);
+        Case up = c.plateau.getCase(c, d); // On envoit désormais suivant la direction
         if (up != null) {
             Machine m = up.getMachine();
             ;
