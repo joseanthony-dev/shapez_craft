@@ -1,0 +1,214 @@
+@startuml Shapez Craft - Diagramme de Classes
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+' ============== PACKAGE modele.item ==============
+package "modele.item" {
+
+    enum Color {
+        Red
+        Green
+        Blue
+        Yellow
+        Purple
+        Cyan
+        White
+    }
+
+    enum SubShape {
+        Circle
+        Carre
+        Fan
+        Star
+        None
+    }
+
+    abstract class Item {
+    }
+
+    class ItemColor {
+        ~ color : Color
+        + transform(add : Color) : void
+    }
+
+    class ItemShape {
+        - tabSubShapes : SubShape[]
+        - tabColors : Color[]
+        + ItemShape(str : String)
+        + getSubShapes(l : Layer) : SubShape[]
+        + getColors(l : Layer) : Color[]
+        + rotate() : void
+        + stack(ShapeSup : ItemShape) : void
+        + Cut() : ItemShape
+        + Color(c : Color) : void
+    }
+
+    enum "ItemShape.Layer" as Layer {
+        one
+        two
+        three
+    }
+}
+
+' ============== PACKAGE modele.plateau ==============
+package "modele.plateau" {
+
+    class Point {
+        + x : int
+        + y : int
+        + Point(x : int, y : int)
+    }
+
+    enum Direction {
+        North(0, -1)
+        South(0, 1)
+        East(1, 0)
+        West(-1, 0)
+        --
+        - dx : int
+        - dy : int
+    }
+
+    class Case {
+        # plateau : Plateau
+        # machine : Machine
+        # gisement : Item
+        + Case(plateau : Plateau)
+        + setMachine(m : Machine) : void
+        + getMachine() : Machine
+    }
+
+    abstract class Machine implements Runnable {
+        ~ current : LinkedList<Item>
+        ~ c : Case
+        ~ d : Direction
+        + Machine()
+        + Machine(item : Item)
+        + setCase(c : Case) : void
+        + getCurrent() : Item
+        + send() : void
+        + work() : void
+        + run() : void
+    }
+
+    class Mine {
+        + work() : void
+        + send() : void
+    }
+
+    class Poubelle {
+        + send() : void
+    }
+
+    class Tapis {
+    }
+
+    class Plateau extends Observable implements Runnable {
+        + {static} SIZE_X : int = 16
+        + {static} SIZE_Y : int = 16
+        - map : HashMap<Case, Point>
+        - grilleCases : Case[][]
+        + Plateau()
+        + getCases() : Case[][]
+        + getCase(source : Case, d : Direction) : Case
+        + setMachine(x : int, y : int, m : Machine) : void
+        - initPlateauVide() : void
+        - contenuDansGrille(p : Point) : boolean
+        - caseALaPosition(p : Point) : Case
+        + run() : void
+    }
+}
+
+' ============== PACKAGE modele.jeu ==============
+package "modele.jeu" {
+
+    class Jeu extends Thread {
+        - plateau : Plateau
+        + Jeu()
+        + getPlateau() : Plateau
+        + press(x : int, y : int) : void
+        + slide(x : int, y : int) : void
+        + run() : void
+        + jouerPartie() : void
+    }
+}
+
+' ============== PACKAGE vuecontroleur ==============
+package "vuecontroleur" {
+
+    class ImagePanel extends JPanel {
+        - imgBackground : Image
+        - imgFront : Image
+        - shape : ItemShape
+        + setShape(shape : ItemShape) : void
+        + setBackground(img : Image) : void
+        + setFront(img : Image) : void
+        # paintComponent(g : Graphics) : void
+    }
+
+    class VueControleur extends JFrame implements Observer {
+        - {static} pxCase : int = 82
+        - plateau : Plateau
+        - jeu : Jeu
+        - sizeX : int
+        - sizeY : int
+        - icoRouge : Image
+        - icoTapisDroite : Image
+        - icoPoubelle : Image
+        - icoMine : Image
+        - grilleIP : JComponent
+        - mousePressed : boolean
+        - tabIP : ImagePanel[][]
+        + VueControleur(jeu : Jeu)
+        - chargerLesIcones() : void
+        - placerLesComposantsGraphiques() : void
+        - mettreAJourAffichage() : void
+        + update(o : Observable, arg : Object) : void
+    }
+}
+
+' ============== CLASSE Main ==============
+class Main {
+    + {static} main(args : String[]) : void
+}
+
+' ============== RELATIONS D'HERITAGE ==============
+Item <|-- ItemColor
+Item <|-- ItemShape
+Machine <|-- Mine
+Machine <|-- Poubelle
+Machine <|-- Tapis
+ItemShape +-- Layer
+
+' ============== ASSOCIATIONS ==============
+ItemColor --> Color : utilise
+ItemShape --> "0..*" SubShape : tabSubShapes
+ItemShape --> "0..*" Color : tabColors
+
+Case --> "1" Plateau : plateau
+Case --> "0..1" Machine : machine
+Case --> "0..1" Item : gisement
+
+Machine --> "0..*" Item : current
+Machine --> "0..1" Case : c
+Machine --> "1" Direction : d
+
+Plateau --> "0..*" Case : grilleCases[][]
+Plateau --> "0..*" Point : map
+
+Jeu --> "1" Plateau : plateau
+
+VueControleur --> "1" Plateau : plateau
+VueControleur --> "1" Jeu : jeu
+VueControleur --> "0..*" ImagePanel : tabIP[][]
+
+ImagePanel --> "0..1" ItemShape : shape
+
+Main ..> Jeu : crée
+Main ..> VueControleur : crée
+
+' ============== PATTERN OBSERVER ==============
+Plateau ..> VueControleur : notifie (Observer)
+
+@enduml
