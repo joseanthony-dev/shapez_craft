@@ -13,6 +13,8 @@ import modele.item.ItemColor;
 import modele.item.ItemShape;
 import modele.jeu.Jeu;
 import modele.plateau.*;
+// Ajout pour importer le type enum outil
+import modele.jeu.Outil;
 
 
 /** Cette classe a deux fonctions :
@@ -73,8 +75,8 @@ public class VueControleur extends JFrame implements Observer {
         setSize(sizeX * pxCase, sizeX * pxCase);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
+        setLayout(new BorderLayout()); // utiliser pour inclure notre boite à outil en bordure de layout
         grilleIP = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
-
 
         tabIP = new ImagePanel[sizeX][sizeY];
 
@@ -119,7 +121,28 @@ public class VueControleur extends JFrame implements Observer {
                 grilleIP.add(iP);
             }
         }
-        add(grilleIP);
+
+        JPanel panneauOutils = new JPanel(); // On définit notre panneau
+        panneauOutils.setLayout(new GridLayout(4, 1)); // On met une colonne et 4 item pour l'instant
+
+        JButton btnTapis = new JButton("Tapis"); // On créer notre bouton pour le tapis
+        JButton btnMine = new JButton("Mine"); // On créer notre bouton pour la mine
+        JButton btnPoubelle = new JButton("Poubelle"); // On créer notre bouton pour la poubelle
+        JButton btnSupprimer = new JButton("Supprimer"); // On créer notre bouton pour supprimer une machine
+
+        btnTapis.addActionListener(e -> jeu.setOutilSelectionne(Outil.TAPIS)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur le tapis
+        btnMine.addActionListener(e -> jeu.setOutilSelectionne(Outil.MINE)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la mine
+        btnPoubelle.addActionListener(e -> jeu.setOutilSelectionne(Outil.POUBELLE)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la poubelle
+        btnSupprimer.addActionListener(e -> jeu.setOutilSelectionne(Outil.SUPPRIMER)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la suppression
+
+        panneauOutils.add(btnTapis); // On incorpore notre bouton tapis dans le panneau créer
+        panneauOutils.add(btnMine); // On incorpore notre bouton mine dans le panneau créer
+        panneauOutils.add(btnPoubelle); // On incorpore notre bouton poubelle dans le panneau créer
+        panneauOutils.add(btnSupprimer); // On incorpore notre bouton supprimer dans le panneau créer
+
+        add(panneauOutils, BorderLayout.WEST); // On ajoute notre panneau d'outils à la bordure gauche
+
+        add(grilleIP, BorderLayout.CENTER); // On centre désormais notre grille car la boite à outil est ajouté sur la bordure gauche
     }
 
 
