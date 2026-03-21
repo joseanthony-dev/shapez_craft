@@ -9,4 +9,19 @@ public enum Direction {
         dx = _dx;
         dy = _dy;
     }
+
+    /**
+     * Permet de modifier la direction dans l'ordre : Nord -> Est -> Sud -> Ouest
+     * @return
+     */
+    public Direction direction_suivante() {
+        switch (this) {
+            case North: return East;
+            case East: return South;
+            case South: return West;
+            case West: return North;
+            default: return North;
+        }
+    }
+
 }
