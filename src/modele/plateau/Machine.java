@@ -34,6 +34,15 @@ public abstract class Machine implements Runnable {
         }
     }
 
+    /**
+     * Fonction permettant de retourner vraie ou faux selon la provenance de l'objet si on acppete de la faire rentrer dans la machine, on redéfinira les fonctions pour chaque machine
+     * @param provenance la direction depuis laquelle arrive l'objet (la forme)
+     * @return un booléan si on peut accepter l'objet ou non
+     */
+    public boolean accepteDepuis(Direction provenance) {
+        return true; // par defaut, une machine accepte de partout
+    }
+
     // On définit la fonction tourner qui fait le changement de direction
     public void tourner() {
         d = d.direction_suivante();
@@ -53,7 +62,7 @@ public abstract class Machine implements Runnable {
         if (up != null) {
             Machine m = up.getMachine();
             ;
-            if (m != null && !current.isEmpty()) {
+            if (m != null && !current.isEmpty() && m.accepteDepuis(d.direction_opossee())) {
                 Item item = current.getFirst();
                 m.current.add(item);
                 current.remove(item);
