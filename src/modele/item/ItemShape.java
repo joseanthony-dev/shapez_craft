@@ -49,10 +49,7 @@ public class ItemShape extends Item {
                 default:
                     throw new IllegalStateException("Unexpected value: " + str.charAt((i + 1)*2));
             }
-
-
         }
-
     }
 
 
@@ -76,7 +73,6 @@ public class ItemShape extends Item {
         tabSubShapes = bufferSubShapes;
         tabColors = bufferColors;
 
-
     }
     public void stack(ItemShape ShapeSup) { // ShapeSup est empilé sur this
 
@@ -89,5 +85,4 @@ public class ItemShape extends Item {
     public void Color(Color c) {
 
     }
-
 }

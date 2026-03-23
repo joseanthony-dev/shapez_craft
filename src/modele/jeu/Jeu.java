@@ -14,12 +14,9 @@ public class Jeu extends Thread{
 
     public Jeu() {
         plateau = new Plateau();
-
         plateau.setMachine(5, 10, new Mine());
         plateau.setMachine(5, 5, new Poubelle());
-
         start();
-
     }
 
     public Plateau getPlateau() {
@@ -98,13 +95,11 @@ public class Jeu extends Thread{
         }
     }
 
-
     public void run() {
         jouerPartie();
     }
 
     public void jouerPartie() {
-
         while(true) {
             try {
                 plateau.run();
@@ -114,8 +109,5 @@ public class Jeu extends Thread{
             }
 
         }
-
     }
-
-
 }
