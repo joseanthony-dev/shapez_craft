@@ -40,14 +40,13 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoMineBas;
     private Image icoMineDroit;
     private Image icoMineGauche;
-
+    private Image icoLivraison;
 
     private JComponent grilleIP;
 
     private boolean mousePressed = false; // permet de mémoriser l'état de la souris
 
     private ImagePanel[][] tabIP; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône background et front, suivant ce qui est présent dans le modèle)
-
 
     public VueControleur(Jeu _jeu) {
         jeu = _jeu;
@@ -61,7 +60,6 @@ public class VueControleur extends JFrame implements Observer {
         plateau.addObserver(this);
 
         mettreAJourAffichage();
-
     }
 
 
@@ -70,6 +68,7 @@ public class VueControleur extends JFrame implements Observer {
         icoRouge = new ImageIcon("./data/sprites/colors/blue.png").getImage();
 
         icoPoubelle = new ImageIcon("./data/sprites/buildings/trash.png").getImage();
+        icoLivraison = new ImageIcon("./data/sprites/buildings/hub.png").getImage();
 
         icoMineHaut = new ImageIcon("./data/sprites/buildings/miner.png").getImage();
         icoMineBas = new ImageIcon("./data/sprites/buildings/miner_bot.png").getImage();
@@ -135,8 +134,6 @@ public class VueControleur extends JFrame implements Observer {
 
                     }
                 });
-
-
                 grilleIP.add(iP);
             }
         }
@@ -169,14 +166,12 @@ public class VueControleur extends JFrame implements Observer {
      * Il y a une grille du côté du modèle ( jeu.getGrille() ) et une grille du côté de la vue (tabIP)
      */
     private void mettreAJourAffichage() {
-
-
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
 
                 tabIP[x][y].setBackground((Image) null);
-
                 tabIP[x][y].setFront(null);
+                tabIP[x][y].setTexte(null);
 
                 Case c = plateau.getCases()[x][y];
 
@@ -200,6 +195,9 @@ public class VueControleur extends JFrame implements Observer {
                         }
                     } else if (m instanceof Poubelle) {
                         tabIP[x][y].setBackground(icoPoubelle);
+                    } else if (m instanceof Livraison) {
+                        tabIP[x][y].setBackground(icoLivraison);
+                        tabIP[x][y].setTexte(String.valueOf(((Livraison) m).getCompteur()));
                     } else if (m instanceof Mine) {
                         switch (m.getDirection()){
                             case North:
@@ -235,8 +233,6 @@ public class VueControleur extends JFrame implements Observer {
             }
         }
         grilleIP.repaint();
-
-
     }
 
     @Override

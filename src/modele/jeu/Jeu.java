@@ -1,5 +1,6 @@
 package modele.jeu;
 
+import modele.plateau.Livraison;
 import modele.plateau.Mine;
 import modele.plateau.Plateau;
 import modele.plateau.Poubelle;
@@ -16,6 +17,7 @@ public class Jeu extends Thread{
         plateau = new Plateau();
         plateau.setMachine(5, 10, new Mine());
         plateau.setMachine(5, 5, new Poubelle());
+        plateau.setMachine(8, 8, new Livraison());
         start();
     }
 
@@ -57,6 +59,7 @@ public class Jeu extends Thread{
      * @param y indique la coordonnée y de la case du plateau
      */
     public void press(int x, int y) {
+        if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
         switch (outilSelectionne) {
             case TAPIS:
                 plateau.setMachine(x, y, new Tapis());
@@ -79,6 +82,7 @@ public class Jeu extends Thread{
      * @param y indique la coordonnée y de la case du plateau
      */
     public void slide(int x, int y) {
+        if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
         switch (outilSelectionne) {
             case TAPIS:
                 plateau.setMachine(x, y, new Tapis());

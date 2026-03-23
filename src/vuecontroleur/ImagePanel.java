@@ -10,6 +10,7 @@ public class ImagePanel extends JPanel {
     private Image imgBackground;
     private Image imgFront;
     private ItemShape shape;
+    private String texte;
 
 
     public void setShape(ItemShape _shape) {
@@ -22,6 +23,10 @@ public class ImagePanel extends JPanel {
 
     public void setFront(Image _imgFront) {
         imgFront = _imgFront;
+    }
+
+    public void setTexte(String _texte) {
+        texte = _texte;
     }
     @Override
     protected void paintComponent(Graphics g) {
@@ -49,6 +54,15 @@ public class ImagePanel extends JPanel {
         if (imgBackground != null) {
 
             g.drawImage(imgBackground, xBack, yBack, widthBack, heigthBack, this);
+        }
+
+        if (texte != null) {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 16));
+            FontMetrics fm = g.getFontMetrics();
+            int textX = xBack + (widthBack - fm.stringWidth(texte)) / 2;
+            int textY = yBack + (heigthBack + fm.getAscent()) / 2;
+            g.drawString(texte, textX, textY);
         }
 
         if (imgFront != null) {
