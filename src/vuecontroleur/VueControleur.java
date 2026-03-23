@@ -36,7 +36,11 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoTapisHaut;
     private Image icoTapisBas;
     private Image icoPoubelle;
-    private Image icoMine;
+    private Image icoMineHaut;
+    private Image icoMineBas;
+    private Image icoMineDroit;
+    private Image icoMineGauche;
+
 
     private JComponent grilleIP;
 
@@ -66,7 +70,11 @@ public class VueControleur extends JFrame implements Observer {
         icoRouge = new ImageIcon("./data/sprites/colors/blue.png").getImage();
 
         icoPoubelle = new ImageIcon("./data/sprites/buildings/trash.png").getImage();
-        icoMine = new ImageIcon("./data/sprites/buildings/miner.png").getImage();
+
+        icoMineHaut = new ImageIcon("./data/sprites/buildings/miner.png").getImage();
+        icoMineBas = new ImageIcon("./data/sprites/buildings/miner_bot.png").getImage();
+        icoMineDroit = new ImageIcon("./data/sprites/buildings/miner_right.png").getImage();
+        icoMineGauche = new ImageIcon("./data/sprites/buildings/miner_left.png").getImage();
 
         // Icônes pour les différents tapis
         icoTapisGauche = new ImageIcon("./data/sprites/buildings/belt_left_straight.png").getImage();
@@ -193,7 +201,20 @@ public class VueControleur extends JFrame implements Observer {
                     } else if (m instanceof Poubelle) {
                         tabIP[x][y].setBackground(icoPoubelle);
                     } else if (m instanceof Mine) {
-                        tabIP[x][y].setBackground(icoMine);
+                        switch (m.getDirection()){
+                            case North:
+                                tabIP[x][y].setBackground(icoMineHaut);
+                                break;
+                            case East:
+                                tabIP[x][y].setBackground(icoMineDroit);
+                                break;
+                            case West:
+                                tabIP[x][y].setBackground(icoMineGauche);
+                                break;
+                            case South:
+                                tabIP[x][y].setBackground(icoMineBas);
+                                break;
+                        }
                     }
 
                     Item current = m.getCurrent();
