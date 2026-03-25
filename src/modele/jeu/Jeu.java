@@ -1,12 +1,7 @@
 package modele.jeu;
 
-import modele.plateau.Livraison;
-import modele.plateau.Mine;
-import modele.plateau.Plateau;
-import modele.plateau.Poubelle;
-import modele.plateau.Tapis;
+import modele.plateau.*;
 import modele.item.ItemShape;
-import modele.plateau.Machine;
 
 public class Jeu extends Thread{
     private Plateau plateau;
@@ -72,6 +67,9 @@ public class Jeu extends Thread{
                 break;
             case SUPPRIMER:
                 plateau.setMachine(x, y, null);
+                break;
+            case ROTATEUR:
+                plateau.setMachine(x, y, new Rotateur());
                 break;
         }
     }
