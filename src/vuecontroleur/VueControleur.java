@@ -130,7 +130,7 @@ public class VueControleur extends JFrame implements Observer {
         }
 
         JPanel panneauOutils = new JPanel(); // On définit notre panneau
-        panneauOutils.setLayout(new GridLayout(4, 1)); // On met une colonne et 4 item pour l'instant
+        panneauOutils.setLayout(new GridLayout(6, 1)); // On met une colonne et 4 item pour l'instant
         JButton btnTapis = new JButton(); // On créer notre bouton pour le tapis
         JButton btnMine = new JButton(); // On créer notre bouton pour la mine
         JButton btnPoubelle = new JButton(); // On créer notre bouton pour la poubelle
@@ -143,6 +143,7 @@ public class VueControleur extends JFrame implements Observer {
         btnMine.setIcon(new ImageIcon("./data/sprites/buildings/miner.png"));
         btnPoubelle.setIcon(new ImageIcon("./data/sprites/buildings/trash.png"));
         btnDecoupeur.setIcon(new ImageIcon("./data/sprites/buildings/cutter.png"));
+        btnSupprimer.setIcon(new ImageIcon("./data/sprites/misc/slot_bad_arrow.png"));
 
         btnTapis.addActionListener(e -> jeu.setOutilSelectionne(Outil.TAPIS)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur le tapis
         btnMine.addActionListener(e -> jeu.setOutilSelectionne(Outil.MINE)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la mine
