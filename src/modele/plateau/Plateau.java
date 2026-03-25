@@ -4,19 +4,12 @@
  * and open the template in the editor.
  */
 package modele.plateau;
-
-
-
 import java.util.HashMap;
 import java.util.Observable;
 
-
 public class Plateau extends Observable implements Runnable {
-
     public static final int SIZE_X = 16;
     public static final int SIZE_Y = 16;
-
-
     private HashMap<Case, Point> map = new HashMap<Case, Point>(); // permet de récupérer la position d'une case à partir de sa référence
     private Case[][] grilleCases = new Case[SIZE_X][SIZE_Y]; // permet de récupérer une case à partir de ses coordonnées
 
@@ -29,15 +22,11 @@ public class Plateau extends Observable implements Runnable {
     }
 
     public Case getCase(Case source, Direction d) {
-
         Point p = map.get(source);
         return caseALaPosition(new Point(p.x+d.dx, p.y+d.dy));
-
-
     }
 
     private void initPlateauVide() {
-
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
                 grilleCases[x][y] = new Case(this);
@@ -54,7 +43,6 @@ public class Plateau extends Observable implements Runnable {
         notifyObservers();
     }
 
-
     /**
      * Indique si p est contenu dans la grille
      */
@@ -70,7 +58,6 @@ public class Plateau extends Observable implements Runnable {
         }
         return retour;
     }
-
 
     @Override
     public void run() {

@@ -1,6 +1,7 @@
 package modele.plateau;
 
 public class Livraison extends Machine {
+
     private int compteur = 0;
 
     @Override

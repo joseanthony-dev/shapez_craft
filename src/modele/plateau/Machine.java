@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public abstract class Machine implements Runnable {
-    LinkedList<Item> current;
 
+    LinkedList<Item> current;
     Case c;
     Direction d = Direction.North; // par défaut, pour commencer, tout est orienté au north
 
@@ -61,7 +61,6 @@ public abstract class Machine implements Runnable {
         Case up = c.plateau.getCase(c, d); // On envoit désormais suivant la direction
         if (up != null) {
             Machine m = up.getMachine();
-            ;
             if (m != null && !current.isEmpty() && m.accepteDepuis(d.direction_opossee())) {
                 Item item = current.getFirst();
                 m.current.add(item);
@@ -73,7 +72,6 @@ public abstract class Machine implements Runnable {
     public void work() {
         if (current.size() > 0) {
             ((ItemShape) current.get(0)).rotate();
-
         }
     }; // action de la machine, aucune par défaut
 
@@ -81,10 +79,5 @@ public abstract class Machine implements Runnable {
     public void run() {
         work();
         send();
-
-
     }
-
-
-
 }

@@ -1,6 +1,7 @@
 package modele.item;
 
 public class ItemShape extends Item {
+
     private SubShape[] tabSubShapes;
     private Color[] tabColors;
     public enum Layer {one, two, three};
@@ -8,7 +9,6 @@ public class ItemShape extends Item {
     public SubShape[] getSubShapes(Layer l) {
         switch(l) {
             case one : return new SubShape[] {tabSubShapes[0], tabSubShapes[1], tabSubShapes[2], tabSubShapes[3]};
-
             // TODO two & three
             default:
                 throw new IllegalStateException("Unexpected value: " + l);
@@ -33,7 +33,6 @@ public class ItemShape extends Item {
 
         tabSubShapes = new SubShape[str.length()/2 ];
         tabColors = new Color[str.length()/2];
-
         for (int i = 0; i < 4; i++) { // fait uniquement pour la première couche
             switch (str.charAt(i*2)) {
                 case 'C' : tabSubShapes[i] = SubShape.Carre;break;
@@ -41,7 +40,6 @@ public class ItemShape extends Item {
                 default:
                     throw new IllegalStateException("Unexpected value: " + str.charAt(i));
             }
-
             switch (str.charAt((i*2 + 1))) {
                 case 'r' : tabColors[i] = Color.Red; break;
                 case 'b' : tabColors[i] = Color.White; break;
@@ -51,9 +49,6 @@ public class ItemShape extends Item {
             }
         }
     }
-
-
-
 
     // TODO : écrire l'ensemble des fonctions de transformation souhaitées, définir les paramètres éventuels (sens, axe, etc.)
     public void rotate() {
@@ -72,10 +67,8 @@ public class ItemShape extends Item {
 
         tabSubShapes = bufferSubShapes;
         tabColors = bufferColors;
-
     }
     public void stack(ItemShape ShapeSup) { // ShapeSup est empilé sur this
-
     }
 
     public ItemShape Cut() { // this et l'objet retourné correpondent au deux sorties
@@ -83,6 +76,5 @@ public class ItemShape extends Item {
     }
 
     public void Color(Color c) {
-
     }
 }

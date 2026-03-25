@@ -1,6 +1,7 @@
 package modele.plateau;
 
 public class Point {
+
     public  int x;
     public  int y;
 
@@ -8,5 +9,4 @@ public class Point {
         this.x = x;
         this.y = y;
     }
-
 }

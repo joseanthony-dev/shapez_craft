@@ -10,11 +10,9 @@ import modele.item.ItemShape;
 
 public class Case {
 
-
     protected Plateau plateau;
     protected Machine machine;
     protected Item gisement; // certaines cases sont des gisements, pour placer des mines
-
 
     public void setMachine(Machine m) {
         machine = m;
@@ -31,5 +29,4 @@ public class Case {
 
         plateau = _plateau;
     }
-
 }

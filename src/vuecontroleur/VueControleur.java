@@ -1,13 +1,10 @@
 package vuecontroleur;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
-
-
 import modele.item.Item;
 import modele.item.ItemColor;
 import modele.item.ItemShape;
@@ -15,7 +12,6 @@ import modele.jeu.Jeu;
 import modele.plateau.*;
 // Ajout pour importer le type enum outil
 import modele.jeu.Outil;
-
 
 /** Cette classe a deux fonctions :
  *  (1) Vue : proposer une représentation graphique de l'application (cases graphiques, etc.)
@@ -41,17 +37,13 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoMineDroit;
     private Image icoMineGauche;
     private Image icoLivraison;
-
     //Icones pour les tapis de coins
     private Image icoTapisBasGauche;
     private Image icoTapisBasDroite;
     private Image icoTapisHautGauche;
     private Image icoTapisHautDroite;
-
     private JComponent grilleIP;
-
     private boolean mousePressed = false; // permet de mémoriser l'état de la souris
-
     private ImagePanel[][] tabIP; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône background et front, suivant ce qui est présent dans le modèle)
 
     public VueControleur(Jeu _jeu) {
@@ -59,34 +51,25 @@ public class VueControleur extends JFrame implements Observer {
         plateau = jeu.getPlateau();
         sizeX = plateau.SIZE_X;
         sizeY = plateau.SIZE_Y;
-
         chargerLesIcones();
         placerLesComposantsGraphiques();
-
         plateau.addObserver(this);
-
         mettreAJourAffichage();
     }
 
-
     private void chargerLesIcones() {
-
         icoRouge = new ImageIcon("./data/sprites/colors/blue.png").getImage();
-
         icoPoubelle = new ImageIcon("./data/sprites/buildings/trash.png").getImage();
         icoLivraison = new ImageIcon("./data/sprites/buildings/hub.png").getImage();
-
         icoMineHaut = new ImageIcon("./data/sprites/buildings/miner.png").getImage();
         icoMineBas = new ImageIcon("./data/sprites/buildings/miner_bot.png").getImage();
         icoMineDroit = new ImageIcon("./data/sprites/buildings/miner_right.png").getImage();
         icoMineGauche = new ImageIcon("./data/sprites/buildings/miner_left.png").getImage();
-
         // Icônes pour les différents tapis
         icoTapisGauche = new ImageIcon("./data/sprites/buildings/belt_left_straight.png").getImage();
         icoTapisDroite = new ImageIcon("./data/sprites/buildings/belt_right_straight.png").getImage();
         icoTapisHaut = new ImageIcon("./data/sprites/buildings/belt_top.png").getImage();
         icoTapisBas = new ImageIcon("./data/sprites/buildings/belt_bottom.png").getImage();
-
         //Icones des tapis en coins
         icoTapisBasGauche = new ImageIcon("./data/sprites/buildings/belt_left_bottom.png").getImage();
         icoTapisBasDroite = new ImageIcon("./data/sprites/buildings/belt_right_bottom.png").getImage();
@@ -99,18 +82,13 @@ public class VueControleur extends JFrame implements Observer {
         setResizable(true);
         setSize(sizeX * pxCase, sizeX * pxCase);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
-
         setLayout(new BorderLayout()); // utiliser pour inclure notre boite à outil en bordure de layout
         grilleIP = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
-
         tabIP = new ImagePanel[sizeX][sizeY];
-
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
                 ImagePanel iP = new ImagePanel();
-
                 tabIP[x][y] = iP; // on conserve les cases graphiques dans tabJLabel pour avoir un accès pratique à celles-ci (voir mettreAJourAffichage() )
-
                 final int xx = x; // permet de compiler la classe anonyme ci-dessous
                 final int yy = y;
                 // écouteur de clics
@@ -123,14 +101,12 @@ public class VueControleur extends JFrame implements Observer {
                             System.out.println(xx + "-" + yy);
                         }
                     }
-
                     @Override
                     public void mouseEntered(MouseEvent e) {
                         if (mousePressed) {
                             jeu.slide(xx, yy);
                         }
                     }
-
                     @Override
                     public void mousePressed(MouseEvent e) {
                         if (e.getButton() == MouseEvent.BUTTON1) {
@@ -138,11 +114,9 @@ public class VueControleur extends JFrame implements Observer {
                             jeu.press(xx, yy);
                         }
                     }
-
                     @Override
                     public void mouseReleased(MouseEvent e) {
                         mousePressed = false;
-
                     }
                 });
                 grilleIP.add(iP);
@@ -151,27 +125,21 @@ public class VueControleur extends JFrame implements Observer {
 
         JPanel panneauOutils = new JPanel(); // On définit notre panneau
         panneauOutils.setLayout(new GridLayout(4, 1)); // On met une colonne et 4 item pour l'instant
-
         JButton btnTapis = new JButton("Tapis"); // On créer notre bouton pour le tapis
         JButton btnMine = new JButton("Mine"); // On créer notre bouton pour la mine
         JButton btnPoubelle = new JButton("Poubelle"); // On créer notre bouton pour la poubelle
         JButton btnSupprimer = new JButton("Supprimer"); // On créer notre bouton pour supprimer une machine
-
         btnTapis.addActionListener(e -> jeu.setOutilSelectionne(Outil.TAPIS)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur le tapis
         btnMine.addActionListener(e -> jeu.setOutilSelectionne(Outil.MINE)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la mine
         btnPoubelle.addActionListener(e -> jeu.setOutilSelectionne(Outil.POUBELLE)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la poubelle
         btnSupprimer.addActionListener(e -> jeu.setOutilSelectionne(Outil.SUPPRIMER)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la suppression
-
         panneauOutils.add(btnTapis); // On incorpore notre bouton tapis dans le panneau créer
         panneauOutils.add(btnMine); // On incorpore notre bouton mine dans le panneau créer
         panneauOutils.add(btnPoubelle); // On incorpore notre bouton poubelle dans le panneau créer
         panneauOutils.add(btnSupprimer); // On incorpore notre bouton supprimer dans le panneau créer
-
         add(panneauOutils, BorderLayout.WEST); // On ajoute notre panneau d'outils à la bordure gauche
-
         add(grilleIP, BorderLayout.CENTER); // On centre désormais notre grille car la boite à outil est ajouté sur la bordure gauche
     }
-
 
     /**
      * Il y a une grille du côté du modèle ( jeu.getGrille() ) et une grille du côté de la vue (tabIP)
@@ -179,15 +147,11 @@ public class VueControleur extends JFrame implements Observer {
     private void mettreAJourAffichage() {
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-
                 tabIP[x][y].setBackground((Image) null);
                 tabIP[x][y].setFront(null);
                 tabIP[x][y].setTexte(null);
-
                 Case c = plateau.getCases()[x][y];
-
                 Machine m = c.getMachine();
-
                 if (m != null) {
                     if (m instanceof Tapis) {
                         switch (m.getDirection()) {
@@ -225,36 +189,25 @@ public class VueControleur extends JFrame implements Observer {
                                 break;
                         }
                     }
-
                     Item current = m.getCurrent();
-
                     if (current instanceof ItemShape) {
                         tabIP[x][y].setShape((ItemShape) current);
                     }
                     if (current instanceof ItemColor) {
                         // tabIP[x][y].setFront(); TODO : placer l'icone des couleurs approprié
                     }
-
                 }
-
-
-
-
-
             }
         }
         grilleIP.repaint();
     }
-
     @Override
     public void update(Observable o, Object arg) {
-
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 mettreAJourAffichage();
             }
         });
-
     }
 }
