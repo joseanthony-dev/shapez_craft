@@ -42,6 +42,8 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoTapisBasDroite;
     private Image icoTapisHautGauche;
     private Image icoTapisHautDroite;
+    //Icones pour le rond
+    private Image icoRotateur;
     private JComponent grilleIP;
     private boolean mousePressed = false; // permet de mémoriser l'état de la souris
     private ImagePanel[][] tabIP; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône background et front, suivant ce qui est présent dans le modèle)
@@ -75,6 +77,8 @@ public class VueControleur extends JFrame implements Observer {
         icoTapisBasDroite = new ImageIcon("./data/sprites/buildings/belt_right_bottom.png").getImage();
         icoTapisHautGauche = new ImageIcon("./data/sprites/buildings/belt_left_top.png").getImage();
         icoTapisHautDroite = new ImageIcon("./data/sprites/buildings/belt_right_top.png").getImage();
+        //Icones de la rotation
+        icoRotateur = new ImageIcon("./data/sprites/buildings/rotater.png").getImage();
     }
 
     private void placerLesComposantsGraphiques() {
@@ -125,18 +129,25 @@ public class VueControleur extends JFrame implements Observer {
 
         JPanel panneauOutils = new JPanel(); // On définit notre panneau
         panneauOutils.setLayout(new GridLayout(4, 1)); // On met une colonne et 4 item pour l'instant
-        JButton btnTapis = new JButton("Tapis"); // On créer notre bouton pour le tapis
-        JButton btnMine = new JButton("Mine"); // On créer notre bouton pour la mine
-        JButton btnPoubelle = new JButton("Poubelle"); // On créer notre bouton pour la poubelle
-        JButton btnSupprimer = new JButton("Supprimer"); // On créer notre bouton pour supprimer une machine
+        JButton btnTapis = new JButton(); // On créer notre bouton pour le tapis
+        JButton btnMine = new JButton(); // On créer notre bouton pour la mine
+        JButton btnPoubelle = new JButton(); // On créer notre bouton pour la poubelle
+        JButton btnSupprimer = new JButton(); // On créer notre bouton pour supprimer une machine
+        JButton btnRotateur = new JButton(); // On créer notre bouton pour sélectionner le rotateur
+        btnRotateur.setIcon(new ImageIcon("./data/sprites/buildings/rotater.png"));
+        btnTapis.setIcon(new ImageIcon("./data/sprites/buildings/belt_top.png"));
+        btnMine.setIcon(new ImageIcon("./data/sprites/buildings/miner.png"));
+        btnPoubelle.setIcon(new ImageIcon("./data/sprites/buildings/trash.png"));
         btnTapis.addActionListener(e -> jeu.setOutilSelectionne(Outil.TAPIS)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur le tapis
         btnMine.addActionListener(e -> jeu.setOutilSelectionne(Outil.MINE)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la mine
         btnPoubelle.addActionListener(e -> jeu.setOutilSelectionne(Outil.POUBELLE)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la poubelle
         btnSupprimer.addActionListener(e -> jeu.setOutilSelectionne(Outil.SUPPRIMER)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la suppression
+        btnSupprimer.addActionListener(e -> jeu.setOutilSelectionne(Outil.ROTATEUR)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur le rotateur
         panneauOutils.add(btnTapis); // On incorpore notre bouton tapis dans le panneau créer
         panneauOutils.add(btnMine); // On incorpore notre bouton mine dans le panneau créer
         panneauOutils.add(btnPoubelle); // On incorpore notre bouton poubelle dans le panneau créer
         panneauOutils.add(btnSupprimer); // On incorpore notre bouton supprimer dans le panneau créer
+        panneauOutils.add(btnRotateur); // On incorpore notre bouton rotation dans le panneau créer
         add(panneauOutils, BorderLayout.WEST); // On ajoute notre panneau d'outils à la bordure gauche
         add(grilleIP, BorderLayout.CENTER); // On centre désormais notre grille car la boite à outil est ajouté sur la bordure gauche
     }
@@ -168,6 +179,8 @@ public class VueControleur extends JFrame implements Observer {
                                 tabIP[x][y].setBackground(icoTapisBas);
                                 break;
                         }
+                    } else if(m instanceof Rotateur) {
+                        tabIP[x][y].setBackground(icoRotateur);
                     } else if (m instanceof Poubelle) {
                         tabIP[x][y].setBackground(icoPoubelle);
                     } else if (m instanceof Livraison) {
