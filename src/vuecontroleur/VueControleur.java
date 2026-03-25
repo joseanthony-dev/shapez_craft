@@ -42,6 +42,12 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoMineGauche;
     private Image icoLivraison;
 
+    //Icones pour les tapis de coins
+    private Image icoTapisBasGauche;
+    private Image icoTapisBasDroite;
+    private Image icoTapisHautGauche;
+    private Image icoTapisHautDroite;
+
     private JComponent grilleIP;
 
     private boolean mousePressed = false; // permet de mémoriser l'état de la souris
@@ -81,6 +87,11 @@ public class VueControleur extends JFrame implements Observer {
         icoTapisHaut = new ImageIcon("./data/sprites/buildings/belt_top.png").getImage();
         icoTapisBas = new ImageIcon("./data/sprites/buildings/belt_bottom.png").getImage();
 
+        //Icones des tapis en coins
+        icoTapisBasGauche = new ImageIcon("./data/sprites/buildings/belt_left_bottom.png").getImage();
+        icoTapisBasDroite = new ImageIcon("./data/sprites/buildings/belt_right_bottom.png").getImage();
+        icoTapisHautGauche = new ImageIcon("./data/sprites/buildings/belt_left_top.png").getImage();
+        icoTapisHautDroite = new ImageIcon("./data/sprites/buildings/belt_right_top.png").getImage();
     }
 
     private void placerLesComposantsGraphiques() {
