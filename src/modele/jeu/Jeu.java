@@ -71,6 +71,9 @@ public class Jeu extends Thread{
             case ROTATEUR:
                 plateau.setMachine(x, y, new Rotateur());
                 break;
+            case DECOUPEUR:
+                plateau.setMachine(x, y, new Decoupeur());
+                break;
         }
     }
 
@@ -93,6 +96,12 @@ public class Jeu extends Thread{
                 break;
             case SUPPRIMER:
                 plateau.setMachine(x, y, null);
+                break;
+            case ROTATEUR:
+                plateau.setMachine(x, y, new Rotateur());
+                break;
+            case DECOUPEUR:
+                plateau.setMachine(x, y, new Decoupeur());
                 break;
         }
     }
