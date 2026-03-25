@@ -17,10 +17,6 @@ public class Main {
                 vc.setVisible(true);
             }
         };
-
         SwingUtilities.invokeLater(r);
-
     }
-
-
 }
