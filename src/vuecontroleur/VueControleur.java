@@ -162,6 +162,13 @@ public class VueControleur extends JFrame implements Observer {
         btnRotateur.addActionListener(e -> jeu.setOutilSelectionne(Outil.ROTATEUR)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur le rotateur
         btnDecoupeur.addActionListener(e -> jeu.setOutilSelectionne(Outil.DECOUPEUR)); // On ajoute notre listener sur notre bouton de découpage
 
+        // Permet d'éviter des soucis de focus pour la touche R de rotation
+        btnTapis.setFocusable(false);
+        btnMine.setFocusable(false);
+        btnPoubelle.setFocusable(false);
+        btnRotateur.setFocusable(false);
+        btnDecoupeur.setFocusable(false);
+
         panneauOutils.add(btnTapis); // On incorpore notre bouton tapis dans le panneau créer
         panneauOutils.add(btnMine); // On incorpore notre bouton mine dans le panneau créer
         panneauOutils.add(btnPoubelle); // On incorpore notre bouton poubelle dans le panneau créer
