@@ -29,4 +29,14 @@ public class Case {
 
         plateau = _plateau;
     }
+
+    //Utiliserp pour connaitre le gisement de la mine
+    public Item getGisement() {
+        return gisement;
+    }
+
+    public void setGisement(Item g) {
+        gisement = g;
+    }
+
 }

@@ -198,6 +198,20 @@ public class VueControleur extends JFrame implements Observer {
                 tabIP[x][y].setFront(null);
                 tabIP[x][y].setTexte(null);
                 Case c = plateau.getCases()[x][y];
+                // Afficher les images d'arriere plan sur les cases
+                Item gisement = c.getGisement();
+                if (gisement instanceof ItemColor) {
+                    ItemColor ic = (ItemColor) gisement;
+                    switch (ic.getColor()) {
+                        case Red:    tabIP[x][y].setBackground(new ImageIcon("./data/sprites/colors/red.png").getImage()); break;
+                        case Green:  tabIP[x][y].setBackground(new ImageIcon("./data/sprites/colors/green.png").getImage()); break;
+                        case Blue:   tabIP[x][y].setBackground(new ImageIcon("./data/sprites/colors/blue.png").getImage()); break;
+                        case Yellow: tabIP[x][y].setBackground(new ImageIcon("./data/sprites/colors/yellow.png").getImage()); break;
+                        case Purple: tabIP[x][y].setBackground(new ImageIcon("./data/sprites/colors/purple.png").getImage()); break;
+                        case Cyan:   tabIP[x][y].setBackground(new ImageIcon("./data/sprites/colors/cyan.png").getImage()); break;
+                        case White:  tabIP[x][y].setBackground(new ImageIcon("./data/sprites/colors/white.png").getImage()); break;
+                    }
+                }
                 Machine m = c.getMachine();
                 if (m != null) {
                     if (m instanceof Tapis) {
@@ -258,8 +272,18 @@ public class VueControleur extends JFrame implements Observer {
                     if (current instanceof ItemShape) {
                         tabIP[x][y].setShape((ItemShape) current);
                     }
+                    // affichage des couleurs transporté par les machines
                     if (current instanceof ItemColor) {
-                        // tabIP[x][y].setFront(); TODO : placer l'icone des couleurs approprié
+                        ItemColor ic = (ItemColor) current;
+                        switch (ic.getColor()) {
+                            case Red:    tabIP[x][y].setFront(new ImageIcon("./data/sprites/colors/red.png").getImage()); break;
+                            case Green:  tabIP[x][y].setFront(new ImageIcon("./data/sprites/colors/green.png").getImage()); break;
+                            case Blue:   tabIP[x][y].setFront(new ImageIcon("./data/sprites/colors/blue.png").getImage()); break;
+                            case Yellow: tabIP[x][y].setFront(new ImageIcon("./data/sprites/colors/yellow.png").getImage()); break;
+                            case Purple: tabIP[x][y].setFront(new ImageIcon("./data/sprites/colors/purple.png").getImage()); break;
+                            case Cyan:   tabIP[x][y].setFront(new ImageIcon("./data/sprites/colors/cyan.png").getImage()); break;
+                            case White:  tabIP[x][y].setFront(new ImageIcon("./data/sprites/colors/white.png").getImage()); break;
+                        }
                     }
                 }
             }

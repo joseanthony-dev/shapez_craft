@@ -6,6 +6,8 @@
 package modele.plateau;
 import java.util.HashMap;
 import java.util.Observable;
+import modele.item.ItemColor;
+import modele.item.Color;
 
 public class Plateau extends Observable implements Runnable {
     public static final int SIZE_X = 16;
@@ -33,6 +35,8 @@ public class Plateau extends Observable implements Runnable {
                 map.put(grilleCases[x][y], new Point(x, y));
             }
         }
+        // On ajoute un gisement fixe rouge
+        grilleCases[7][7].setGisement(new ItemColor(Color.Red));
     }
 
     public void setMachine(int x, int y, Machine m) {

@@ -60,7 +60,10 @@ public class Jeu extends Thread{
      * @param y indique la coordonnée y de la case du plateau
      */
     public void press(int x, int y) {
+        // Protection contre le posage de n'importer quoi sur la zone de livraison
         if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
+        //Protection contre le posage d'autre chose que la mine sur les couleurs
+        if (plateau.getCases()[x][y].getGisement() != null && outilSelectionne != Outil.MINE) return;
         switch (outilSelectionne) {
             case TAPIS:
                 plateau.setMachine(x, y, new Tapis());
@@ -86,7 +89,10 @@ public class Jeu extends Thread{
      * @param y indique la coordonnée y de la case du plateau
      */
     public void slide(int x, int y) {
+        // Protection contre le posage de n'importer quoi sur la zone de livraison
         if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
+        //Protection contre le posage d'autre chose que la mine sur les couleurs
+        if (plateau.getCases()[x][y].getGisement() != null && outilSelectionne != Outil.MINE) return;
         switch (outilSelectionne) {
             case TAPIS:
                 plateau.setMachine(x, y, new Tapis());
