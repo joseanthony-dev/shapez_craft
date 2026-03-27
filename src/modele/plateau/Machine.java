@@ -61,7 +61,8 @@ public abstract class Machine implements Runnable {
         Case up = c.plateau.getCase(c, d); // On envoit désormais suivant la direction
         if (up != null) {
             Machine m = up.getMachine();
-            if (m != null && !current.isEmpty() && m.accepteDepuis(d.direction_opossee())) {
+            // permet d'envoyer que si la machine est vide, que sa voisine peut accepter et que la file de sa voisine est vide
+            if (m != null && !current.isEmpty() && m.accepteDepuis(d.direction_opossee()) && m.current.isEmpty()) {
                 Item item = current.getFirst();
                 m.current.add(item);
                 current.remove(item);

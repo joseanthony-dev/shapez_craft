@@ -36,7 +36,13 @@ public class Plateau extends Observable implements Runnable {
             }
         }
         // On ajoute un gisement fixe rouge
-        grilleCases[7][7].setGisement(new ItemColor(Color.Red));
+        grilleCases[10][10].setGisement(new ItemColor(Color.Red));
+        grilleCases[10][11].setGisement(new ItemColor(Color.White));
+        grilleCases[10][12].setGisement(new ItemColor(Color.Blue));
+        grilleCases[10][13].setGisement(new ItemColor(Color.Cyan));
+        grilleCases[11][10].setGisement(new ItemColor(Color.Green));
+        grilleCases[11][12].setGisement(new ItemColor(Color.Purple));
+        grilleCases[11][13].setGisement(new ItemColor(Color.Yellow));
     }
 
     public void setMachine(int x, int y, Machine m) {
