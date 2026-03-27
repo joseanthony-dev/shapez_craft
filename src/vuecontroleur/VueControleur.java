@@ -175,6 +175,13 @@ public class VueControleur extends JFrame implements Observer {
         panneauOutils.add(btnRotateur); // On incorpore notre bouton rotation dans le panneau créer
         panneauOutils.add(btnDecoupeur); // On incorpore notre bouton découpeur dans le panneau créer
 
+        // Jlabel (légende des touches de l'application ajouter au sud en bas de la fenetre)
+        JLabel legende = new JLabel("  Clic droit : Supprimer  |  R : Tourner  |  Clic gauche : Placer  ");
+        legende.setHorizontalAlignment(SwingConstants.CENTER);
+        legende.setFont(new Font("Arial", Font.BOLD, 13));
+        legende.setBorder(BorderFactory.createEtchedBorder());
+        add(legende, BorderLayout.SOUTH);
+
         add(panneauOutils, BorderLayout.WEST); // On ajoute notre panneau d'outils à la bordure gauche
         add(grilleIP, BorderLayout.CENTER); // On centre désormais notre grille car la boite à outil est ajouté sur la bordure gauche
     }
