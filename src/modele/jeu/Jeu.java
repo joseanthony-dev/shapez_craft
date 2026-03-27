@@ -49,6 +49,11 @@ public class Jeu extends Thread{
         }
     }
 
+    public void supprimerMachine(int x, int y) {
+        if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
+        plateau.setMachine(x, y, null);
+    }
+
     /**
      * Permet maintenant en fonction de l'outil choisit de poser un tapis, une mine, une poubelle ou bien de faire disparaitre la machine
      * @param x indique la coordonnée x de la case du plateau
@@ -65,9 +70,6 @@ public class Jeu extends Thread{
                 break;
             case POUBELLE:
                 plateau.setMachine(x, y, new Poubelle());
-                break;
-            case SUPPRIMER:
-                plateau.setMachine(x, y, null);
                 break;
             case ROTATEUR:
                 plateau.setMachine(x, y, new Rotateur());
@@ -94,9 +96,6 @@ public class Jeu extends Thread{
                 break;
             case POUBELLE:
                 plateau.setMachine(x, y, new Poubelle());
-                break;
-            case SUPPRIMER:
-                plateau.setMachine(x, y, null);
                 break;
             case ROTATEUR:
                 plateau.setMachine(x, y, new Rotateur());
