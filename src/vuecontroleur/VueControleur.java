@@ -182,6 +182,8 @@ public class VueControleur extends JFrame implements Observer {
         legende.setBorder(BorderFactory.createEtchedBorder());
         add(legende, BorderLayout.SOUTH);
 
+        // On réduit la taille de la boite à outils
+        panneauOutils.setPreferredSize(new Dimension(250, 0));
         add(panneauOutils, BorderLayout.WEST); // On ajoute notre panneau d'outils à la bordure gauche
         add(grilleIP, BorderLayout.CENTER); // On centre désormais notre grille car la boite à outil est ajouté sur la bordure gauche
     }
