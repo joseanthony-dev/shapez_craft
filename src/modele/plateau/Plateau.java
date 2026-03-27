@@ -37,6 +37,8 @@ public class Plateau extends Observable implements Runnable {
 
     public void setMachine(int x, int y, Machine m) {
         grilleCases[x][y].setMachine(m);
+        // On met à jour les coins pour détecter les tapis de coins
+        mettreAJourCoins(x, y);
         setChanged();
         notifyObservers();
     }
@@ -55,6 +57,25 @@ public class Plateau extends Observable implements Runnable {
             retour = grilleCases[p.x][p.y];
         }
         return retour;
+    }
+
+    /**
+     * Fonction permettant de mettre à jour les coins pour détecter les tapis et les mettres en coin
+     * @param x
+     * @param y
+     */
+    public void mettreAJourCoins(int x, int y) {
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (Math.abs(dx) + Math.abs(dy) != 1) continue;
+                int nx = x + dx, ny = y + dy;
+                if (contenuDansGrille(new Point(nx, ny)) && grilleCases[nx][ny].getMachine() instanceof Tapis)
+                    ((Tapis) grilleCases[nx][ny].getMachine()).detecterCoin();
+            }
+        }
+        // aussi le tapis posé lui-même
+        if (grilleCases[x][y].getMachine() instanceof Tapis)
+            ((Tapis) grilleCases[x][y].getMachine()).detecterCoin();
     }
 
     @Override

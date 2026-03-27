@@ -45,6 +45,7 @@ public class Jeu extends Thread{
         Machine m = plateau.getCases()[x][y].getMachine();
         if (m != null) {
             m.tourner();
+            plateau.mettreAJourCoins(x, y);
         }
     }
 

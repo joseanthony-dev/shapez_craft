@@ -176,19 +176,33 @@ public class VueControleur extends JFrame implements Observer {
                 Machine m = c.getMachine();
                 if (m != null) {
                     if (m instanceof Tapis) {
-                        switch (m.getDirection()) {
-                            case North:
-                                tabIP[x][y].setBackground(icoTapisHaut);
-                                break;
-                            case East:
-                                tabIP[x][y].setBackground(icoTapisDroite);
-                                break;
-                            case West:
-                                tabIP[x][y].setBackground(icoTapisGauche);
-                                break;
-                            case South:
-                                tabIP[x][y].setBackground(icoTapisBas);
-                                break;
+                        Tapis t = (Tapis) m;
+                        if(t.getCoinEntree() != null){
+                            Direction s = t.getDirection();
+                            Direction e = t.getCoinEntree();
+                            if ((s == Direction.North && e == Direction.West) || (s == Direction.West && e == Direction.North))
+                                tabIP[x][y].setBackground(icoTapisBasGauche);
+                            else if ((s == Direction.North && e == Direction.East) || (s == Direction.East && e == Direction.North))
+                                tabIP[x][y].setBackground(icoTapisBasDroite);
+                            else if ((s == Direction.South && e == Direction.West) || (s == Direction.West && e == Direction.South))
+                                tabIP[x][y].setBackground(icoTapisHautGauche);
+                            else if ((s == Direction.South && e == Direction.East) || (s == Direction.East && e == Direction.South))
+                                tabIP[x][y].setBackground(icoTapisHautDroite);
+                        }else{
+                            switch (m.getDirection()) {
+                                case North:
+                                    tabIP[x][y].setBackground(icoTapisHaut);
+                                    break;
+                                case East:
+                                    tabIP[x][y].setBackground(icoTapisDroite);
+                                    break;
+                                case West:
+                                    tabIP[x][y].setBackground(icoTapisGauche);
+                                    break;
+                                case South:
+                                    tabIP[x][y].setBackground(icoTapisBas);
+                                    break;
+                            }
                         }
                     } else if (m instanceof Rotateur) {
                         tabIP[x][y].setBackground(icoRotateur);
