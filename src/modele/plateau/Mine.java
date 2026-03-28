@@ -12,9 +12,9 @@ public class Mine extends Machine {
     public void work() { // TODO : modifier, suivant le gisement fait
         if (new Random().nextInt(4) == 0) {
             Item gisement = c.getGisement();
-            // On ajoute en fonction du type de gisement si couleur ou forme
+            // On ajoute en fonction du type de gisement si couleur ou forme coloré
             if (gisement instanceof ItemShape) {
-                current.add(new ItemShape("CrCb--Cb"));
+                current.add(new ItemShape(((ItemShape) gisement).getCode()));
             } else if (gisement instanceof ItemColor) {
                 current.add(new ItemColor(((ItemColor) gisement).getColor()));
             }

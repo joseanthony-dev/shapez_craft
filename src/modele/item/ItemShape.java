@@ -5,6 +5,7 @@ public class ItemShape extends Item {
     private SubShape[] tabSubShapes;
     private Color[] tabColors;
     public enum Layer {one, two, three};
+    private String code;
 
     public SubShape[] getSubShapes(Layer l) {
         switch(l) {
@@ -24,13 +25,22 @@ public class ItemShape extends Item {
         }
     }
 
+    /**
+     * Getter permettant de retourner le code de la forme coloré
+     * @return
+     */
+    public String getCode(){
+        return code;
+    }
+
     /**;
      * Initialisation des formes par chaîne de caractères
      * @param str : codage : (sous forme + couleur ) * (haut-droit, bas-droit, bas-gauche, haut-gauche) * 3 Layers
      *            str.length multiple de 4
      */
     public ItemShape(String str) {
-
+        // on stocke le code dans le constructeur
+        this.code = str;
         tabSubShapes = new SubShape[str.length()/2 ];
         tabColors = new Color[str.length()/2];
         for (int i = 0; i < 4; i++) { // fait uniquement pour la première couche
