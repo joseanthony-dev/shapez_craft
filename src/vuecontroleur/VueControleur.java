@@ -43,8 +43,13 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoTapisBasDroite;
     private Image icoTapisHautGauche;
     private Image icoTapisHautDroite;
+
+    private Image icoRotateurHaut;
+    private Image icoRotateurBas;
+    private Image icoRotateurGauche;
+    private Image icoRotateurDroit;
+
     //Icones pour le rond
-    private Image icoRotateur;
     private Image icoDecoupeur;
     private JComponent grilleIP;
     private boolean mousePressed = false; // permet de mémoriser l'état de la souris
@@ -81,8 +86,10 @@ public class VueControleur extends JFrame implements Observer {
         icoTapisHautGauche = new ImageIcon("./data/sprites/buildings/belt_left_top.png").getImage();
         icoTapisHautDroite = new ImageIcon("./data/sprites/buildings/belt_right_top.png").getImage();
         //Icones de la rotation
-        icoRotateur = new ImageIcon("./data/sprites/buildings/rotater.png").getImage();
-        icoDecoupeur = new ImageIcon("./data/sprites/buildings/cutter.png").getImage();
+        icoRotateurHaut = new ImageIcon("./data/sprites/buildings/rotater.png").getImage();
+        icoRotateurBas = new ImageIcon("./data/sprites/buildings/rotater_bas.png").getImage();
+        icoRotateurGauche = new ImageIcon("./data/sprites/buildings/rotater_gauche.png").getImage();
+        icoRotateurDroit = new ImageIcon("./data/sprites/buildings/rotater_droit.png").getImage();
     }
 
     private void placerLesComposantsGraphiques() {
@@ -248,7 +255,20 @@ public class VueControleur extends JFrame implements Observer {
                             }
                         }
                     } else if (m instanceof Rotateur) {
-                        tabIP[x][y].setBackground(icoRotateur);
+                        switch (m.getDirection()) {
+                            case North:
+                                tabIP[x][y].setBackground(icoRotateurHaut);
+                                break;
+                            case East:
+                                tabIP[x][y].setBackground(icoRotateurDroit);
+                                break;
+                            case West:
+                                tabIP[x][y].setBackground(icoRotateurGauche);
+                                break;
+                            case South:
+                                tabIP[x][y].setBackground(icoRotateurBas);
+                                break;
+                        }
                     } else if (m instanceof Decoupeur) {
                         tabIP[x][y].setBackground(icoDecoupeur);
                     } else if (m instanceof Poubelle) {

@@ -71,9 +71,9 @@ public abstract class Machine implements Runnable {
     }
 
     public void work() {
-        if (current.size() > 0 && current.get(0) instanceof ItemShape) {
-            ((ItemShape) current.get(0)).rotate();
-        }
+        //if (current.size() > 0 && current.get(0) instanceof ItemShape) {
+        //    ((ItemShape) current.get(0)).rotate();
+        //}
     }; // action de la machine, aucune par défaut
 
     @Override
