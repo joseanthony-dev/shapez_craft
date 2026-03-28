@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import modele.item.ItemColor;
 import modele.item.Color;
+import modele.item.ItemShape;
 
 public class Plateau extends Observable implements Runnable {
     public static final int SIZE_X = 16;
@@ -35,7 +36,7 @@ public class Plateau extends Observable implements Runnable {
                 map.put(grilleCases[x][y], new Point(x, y));
             }
         }
-        // On ajoute un gisement fixe rouge
+        // On ajoute un gisement fixe de chaque couleure
         grilleCases[10][10].setGisement(new ItemColor(Color.Red));
         grilleCases[10][11].setGisement(new ItemColor(Color.White));
         grilleCases[10][12].setGisement(new ItemColor(Color.Blue));
@@ -43,6 +44,11 @@ public class Plateau extends Observable implements Runnable {
         grilleCases[11][10].setGisement(new ItemColor(Color.Green));
         grilleCases[11][12].setGisement(new ItemColor(Color.Purple));
         grilleCases[11][13].setGisement(new ItemColor(Color.Yellow));
+        // On ajoute des gisements de formes
+        grilleCases[5][10].setGisement(new ItemShape("CrCr CrCr"));  // carré rouge complet
+        grilleCases[5][11].setGisement(new ItemShape("OuOu OuOu"));  // cercle bleu complet
+        grilleCases[5][12].setGisement(new ItemShape("Sg--Sg--"));   // étoile verte demi
+        grilleCases[5][13].setGisement(new ItemShape("FyFyFyFy"));   // fan jaune complet
     }
 
     public void setMachine(int x, int y, Machine m) {
