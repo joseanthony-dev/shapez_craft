@@ -34,15 +34,25 @@ public class ItemShape extends Item {
         tabSubShapes = new SubShape[str.length()/2 ];
         tabColors = new Color[str.length()/2];
         for (int i = 0; i < 4; i++) { // fait uniquement pour la première couche
+            // ajout des différentes formes
             switch (str.charAt(i*2)) {
                 case 'C' : tabSubShapes[i] = SubShape.Carre;break;
+                case 'O' : tabSubShapes[i] = SubShape.Circle;break;
+                case 'S' : tabSubShapes[i] = SubShape.Star;break;
+                case 'F' : tabSubShapes[i] = SubShape.Fan;break;
                 case '-' : tabSubShapes[i] = SubShape.None;break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + str.charAt(i));
             }
             switch (str.charAt((i*2 + 1))) {
+                // ajout des différentes couleurs
                 case 'r' : tabColors[i] = Color.Red; break;
                 case 'b' : tabColors[i] = Color.White; break;
+                case 'g' : tabColors[i] = Color.Green; break;
+                case 'u' : tabColors[i] = Color.Blue; break;
+                case 'y' : tabColors[i] = Color.Yellow; break;
+                case 'p' : tabColors[i] = Color.Purple; break;
+                case 'c' : tabColors[i] = Color.Cyan; break;
                 case '-' : tabColors[i] = null; break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + str.charAt((i + 1)*2));
