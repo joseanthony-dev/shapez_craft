@@ -197,6 +197,7 @@ public class VueControleur extends JFrame implements Observer {
                 tabIP[x][y].setBackground((Image) null);
                 tabIP[x][y].setFront(null);
                 tabIP[x][y].setTexte(null);
+                tabIP[x][y].setShape(null);
                 Case c = plateau.getCases()[x][y];
                 // Afficher les images d'arriere plan sur les cases
                 Item gisement = c.getGisement();
@@ -211,6 +212,9 @@ public class VueControleur extends JFrame implements Observer {
                         case Cyan:   tabIP[x][y].setBackground(new ImageIcon("./data/sprites/colors/cyan.png").getImage()); break;
                         case White:  tabIP[x][y].setBackground(new ImageIcon("./data/sprites/colors/white.png").getImage()); break;
                     }
+                }
+                if (gisement instanceof ItemShape) {
+                    tabIP[x][y].setShape((ItemShape) gisement);
                 }
                 Machine m = c.getMachine();
                 if (m != null) {

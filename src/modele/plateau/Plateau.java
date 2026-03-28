@@ -45,8 +45,8 @@ public class Plateau extends Observable implements Runnable {
         grilleCases[11][12].setGisement(new ItemColor(Color.Purple));
         grilleCases[11][13].setGisement(new ItemColor(Color.Yellow));
         // On ajoute des gisements de formes
-        grilleCases[5][10].setGisement(new ItemShape("CrCr CrCr"));  // carré rouge complet
-        grilleCases[5][11].setGisement(new ItemShape("OuOu OuOu"));  // cercle bleu complet
+        grilleCases[5][10].setGisement(new ItemShape("CrCrCrCr"));  // carré rouge complet
+        grilleCases[5][11].setGisement(new ItemShape("OuOuOuOu"));  // cercle bleu complet
         grilleCases[5][12].setGisement(new ItemShape("Sg--Sg--"));   // étoile verte demi
         grilleCases[5][13].setGisement(new ItemShape("FyFyFyFy"));   // fan jaune complet
     }

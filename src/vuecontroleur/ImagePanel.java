@@ -64,6 +64,7 @@ public class ImagePanel extends JPanel {
             modele.item.Color[] tabC = shape.getColors(ItemShape.Layer.one);
             for (int i = 0; i < 4; i++) {
                 SubShape ss = tabS[i];
+                // création des couleurs
                 if (ss != SubShape.None) {
                     switch (tabC[i]) {
                         case modele.item.Color.Red:
@@ -72,13 +73,44 @@ public class ImagePanel extends JPanel {
                         case modele.item.Color.White:
                             g.setColor(Color.WHITE);
                             break;
-                        // TODO autres couleurs
+                        case modele.item.Color.Green:
+                            g.setColor(Color.GREEN);
+                            break;
+                        case modele.item.Color.Blue:
+                            g.setColor(Color.BLUE);
+                            break;
+                        case modele.item.Color.Yellow:
+                            g.setColor(Color.YELLOW);
+                            break;
+                        case modele.item.Color.Purple:
+                            g.setColor(new Color(128, 0, 128));
+                            break;
+                        case modele.item.Color.Cyan:
+                            g.setColor(Color.CYAN);
+                            break;
                     }
+                    // création des autres formes
                     switch (ss) {
                         case SubShape.Carre:
                             g.fillRect(xFront + (widthFront / 2) * ((i >> 1) ^ 1), yFront + (heigthFront / 2) * ((i & 1) ^ ((i >> 1) & 1)), widthFront / 2, heigthFront / 2);
                             break;
-                        // TODO autres formes
+                        case Circle:
+                            g.fillOval(xFront + (widthFront / 2) * ((i >> 1) ^ 1), yFront + (heigthFront / 2) * ((i & 1) ^ ((i >> 1) & 1)), widthFront / 2, heigthFront / 2);
+                            break;
+                        case Star:
+                            int sx = xFront + (widthFront / 2) * ((i >> 1) ^ 1);
+                            int sy = yFront + (heigthFront / 2) * ((i & 1) ^ ((i >> 1) & 1));
+                            int sw = widthFront / 2;
+                            int sh = heigthFront / 2;
+                            g.fillPolygon(
+                                    new int[]{sx + sw/2, sx + sw, sx + sw/2, sx},
+                                    new int[]{sy, sy + sh/2, sy + sh, sy + sh/2},
+                                    4
+                            );
+                            break;
+                        case Fan:
+                            g.fillArc(xFront + (widthFront / 2) * ((i >> 1) ^ 1), yFront + (heigthFront / 2) * ((i & 1) ^ ((i >> 1) & 1)), widthFront / 2, heigthFront / 2, 0, 90);
+                            break;
                     }
                 }
             }
