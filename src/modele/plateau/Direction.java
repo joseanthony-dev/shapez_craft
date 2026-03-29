@@ -32,4 +32,14 @@ public enum Direction {
             default: return North;
         }
     }
+
+    public Direction direction_gauche() {
+        switch (this) {
+            case North: return West;
+            case West: return South;
+            case South: return East;
+            case East: return North;
+            default: return North;
+        }
+    }
 }
