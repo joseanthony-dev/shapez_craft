@@ -91,8 +91,58 @@ public class ItemShape extends Item {
     public void stack(ItemShape ShapeSup) { // ShapeSup est empilé sur this
     }
 
+    /**
+     * La méthode permet de couper une forme et retourner la partie gauche alors que la partie droite reste l'objet actuel
+     * @return
+     */
     public ItemShape Cut() { // this et l'objet retourné correpondent au deux sorties
-        return null;
+        // Moitié gauche : on garde quadrants 2 et 3, on met 0 et 1 à None/null
+        SubShape[] leftShapes = new SubShape[]{SubShape.None, SubShape.None, tabSubShapes[2], tabSubShapes[3]};
+        Color[] leftColors = new Color[]{null, null, tabColors[2], tabColors[3]};
+
+        // This devient la moitié droite : on garde quadrants 0 et 1, on met 2 et 3 à None/null
+        tabSubShapes[2] = SubShape.None;
+        tabSubShapes[3] = SubShape.None;
+        tabColors[2] = null;
+        tabColors[3] = null;
+
+        // On reconstruit le code pour this
+        code = buildCode();
+
+        // On crée la moitié gauche
+        ItemShape left = new ItemShape(leftShapes, leftColors);
+        return left;
+    }
+
+
+    private ItemShape(SubShape[] shapes, Color[] colors) {
+        tabSubShapes = shapes;
+        tabColors = colors;
+        code = buildCode();
+    }
+
+    private String buildCode() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            switch (tabSubShapes[i]) {
+                case Carre: sb.append('C'); break;
+                case Circle: sb.append('O'); break;
+                case Star: sb.append('S'); break;
+                case Fan: sb.append('F'); break;
+                case None: sb.append('-'); break;
+            }
+            if (tabColors[i] == null) sb.append('-');
+            else switch (tabColors[i]) {
+                case Red: sb.append('r'); break;
+                case White: sb.append('b'); break;
+                case Green: sb.append('g'); break;
+                case Blue: sb.append('u'); break;
+                case Yellow: sb.append('y'); break;
+                case Purple: sb.append('p'); break;
+                case Cyan: sb.append('c'); break;
+            }
+        }
+        return sb.toString();
     }
 
     public void Color(Color c) {
