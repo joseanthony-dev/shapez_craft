@@ -49,6 +49,11 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoRotateurGauche;
     private Image icoRotateurDroit;
 
+    private Image icoDecoupeurDroit;
+    private Image icoDecoupeurGauche;
+    private Image icoDecoupeurHaut;
+    private Image icoDecoupeurBas;
+
     //Icones pour le rond
     private Image icoDecoupeur;
     private JComponent grilleIP;
@@ -90,6 +95,11 @@ public class VueControleur extends JFrame implements Observer {
         icoRotateurBas = new ImageIcon("./data/sprites/buildings/rotater_bas.png").getImage();
         icoRotateurGauche = new ImageIcon("./data/sprites/buildings/rotater_gauche.png").getImage();
         icoRotateurDroit = new ImageIcon("./data/sprites/buildings/rotater_droit.png").getImage();
+        //Icones du découpeur
+        icoDecoupeurDroit = new ImageIcon("./data/sprites/buildings/cutter_droit.png").getImage();
+        icoDecoupeurGauche = new ImageIcon("./data/sprites/buildings/cutter_gauche.png").getImage();
+        icoDecoupeurHaut = new ImageIcon("./data/sprites/buildings/cutter.png").getImage();
+        icoDecoupeurBas = new ImageIcon("./data/sprites/buildings/cutter_bas.png").getImage();
     }
 
     private void placerLesComposantsGraphiques() {
@@ -270,7 +280,20 @@ public class VueControleur extends JFrame implements Observer {
                                 break;
                         }
                     } else if (m instanceof Decoupeur) {
-                        tabIP[x][y].setBackground(icoDecoupeur);
+                        switch (m.getDirection()) {
+                            case North:
+                                tabIP[x][y].setBackground(icoDecoupeurHaut);
+                                break;
+                            case East:
+                                tabIP[x][y].setBackground(icoDecoupeurDroit);
+                                break;
+                            case West:
+                                tabIP[x][y].setBackground(icoDecoupeurGauche);
+                                break;
+                            case South:
+                                tabIP[x][y].setBackground(icoDecoupeurBas);
+                                break;
+                        }
                     } else if (m instanceof Poubelle) {
                         tabIP[x][y].setBackground(icoPoubelle);
                     } else if (m instanceof Livraison) {
