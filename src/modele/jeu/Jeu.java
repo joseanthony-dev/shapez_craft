@@ -80,6 +80,9 @@ public class Jeu extends Thread{
             case DECOUPEUR:
                 plateau.setMachine(x, y, new Decoupeur());
                 break;
+            case PEINTURE:
+                plateau.setMachine(x, y, new Peinture());
+                break;
         }
     }
 
@@ -108,6 +111,9 @@ public class Jeu extends Thread{
                 break;
             case DECOUPEUR:
                 plateau.setMachine(x, y, new Decoupeur());
+                break;
+            case PEINTURE:
+                plateau.setMachine(x, y, new Peinture());
                 break;
         }
     }

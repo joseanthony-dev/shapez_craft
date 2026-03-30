@@ -146,5 +146,11 @@ public class ItemShape extends Item {
     }
 
     public void Color(Color c) {
+        for (int i = 0; i < 4; i++) {
+            if (tabSubShapes[i] != SubShape.None) {
+                tabColors[i] = c;
+            }
+        }
+        code = buildCode();
     }
 }
