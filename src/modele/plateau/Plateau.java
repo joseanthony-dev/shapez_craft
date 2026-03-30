@@ -37,18 +37,18 @@ public class Plateau extends Observable implements Runnable {
             }
         }
         // On ajoute un gisement fixe de chaque couleure
-        grilleCases[10][10].setGisement(new ItemColor(Color.Red));
-        grilleCases[10][11].setGisement(new ItemColor(Color.White));
-        grilleCases[10][12].setGisement(new ItemColor(Color.Blue));
-        grilleCases[10][13].setGisement(new ItemColor(Color.Cyan));
-        grilleCases[11][10].setGisement(new ItemColor(Color.Green));
-        grilleCases[11][12].setGisement(new ItemColor(Color.Purple));
-        grilleCases[11][13].setGisement(new ItemColor(Color.Yellow));
+        grilleCases[15][9].setGisement(new ItemColor(Color.Red));
+        grilleCases[15][10].setGisement(new ItemColor(Color.White));
+        grilleCases[15][11].setGisement(new ItemColor(Color.Blue));
+        grilleCases[15][12].setGisement(new ItemColor(Color.Cyan));
+        grilleCases[15][13].setGisement(new ItemColor(Color.Green));
+        grilleCases[15][14].setGisement(new ItemColor(Color.Purple));
+        grilleCases[15][15].setGisement(new ItemColor(Color.Yellow));
         // On ajoute des gisements de formes
-        grilleCases[5][10].setGisement(new ItemShape("CrCrCrCr"));  // carré rouge complet
-        grilleCases[5][11].setGisement(new ItemShape("OuOuOuOu"));  // cercle bleu complet
-        grilleCases[5][12].setGisement(new ItemShape("Sg--Sg--"));   // étoile verte demi
-        grilleCases[5][13].setGisement(new ItemShape("FyFyFyFy"));   // fan jaune complet
+        grilleCases[0][12].setGisement(new ItemShape("CrCrCrCr"));  // carré rouge complet
+        grilleCases[0][13].setGisement(new ItemShape("OuOuOuOu"));  // cercle bleu complet
+        grilleCases[0][14].setGisement(new ItemShape("Sg--Sg--"));   // étoile verte demi
+        grilleCases[0][15].setGisement(new ItemShape("FyFyFyFy"));   // fan jaune complet
     }
 
     public void setMachine(int x, int y, Machine m) {

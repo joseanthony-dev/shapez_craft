@@ -10,9 +10,7 @@ public class Jeu extends Thread{
 
     public Jeu() {
         plateau = new Plateau();
-        plateau.setMachine(5, 10, new Mine());
-        plateau.setMachine(5, 5, new Poubelle());
-        plateau.setMachine(8, 8, new Livraison());
+        plateau.setMachine(7, 8, new Livraison());
         start();
     }
 

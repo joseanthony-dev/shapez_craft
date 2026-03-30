@@ -114,7 +114,7 @@ public class VueControleur extends JFrame implements Observer {
     }
 
     private void placerLesComposantsGraphiques() {
-        setTitle("ShapeCraft");
+        setTitle("ShapeCraft JOSE Anthony");
         setResizable(true);
         setSize(sizeX * pxCase, sizeX * pxCase);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
@@ -171,7 +171,7 @@ public class VueControleur extends JFrame implements Observer {
         requestFocus();
 
         JPanel panneauOutils = new JPanel(); // On définit notre panneau
-        panneauOutils.setLayout(new GridLayout(5, 1)); // On met une colonne et 4 item pour l'instant
+        panneauOutils.setLayout(new GridLayout(6, 1)); // On met une colonne et 4 item pour l'instant
         JButton btnTapis = new JButton(); // On créer notre bouton pour le tapis
         JButton btnMine = new JButton(); // On créer notre bouton pour la mine
         JButton btnPoubelle = new JButton(); // On créer notre bouton pour la poubelle
