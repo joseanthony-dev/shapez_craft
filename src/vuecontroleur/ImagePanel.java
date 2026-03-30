@@ -59,57 +59,88 @@ public class ImagePanel extends JPanel {
             g.drawImage(imgFront, xFront, yFront, widthFront, heigthFront, this);
         }
         if (shape != null) {
-            // TODO autres layers
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            int centerX = xFront + widthFront / 2;
+            int centerY = yFront + heigthFront / 2;
+            int r = Math.min(widthFront, heigthFront) / 2;
+
             SubShape[] tabS = shape.getSubShapes(ItemShape.Layer.one);
             modele.item.Color[] tabC = shape.getColors(ItemShape.Layer.one);
+
+            int[] circleStartAngles = {0, 270, 180, 90};
+
             for (int i = 0; i < 4; i++) {
                 SubShape ss = tabS[i];
-                // création des couleurs
-                if (ss != SubShape.None) {
+                if (ss != SubShape.None && tabC[i] != null) {
                     switch (tabC[i]) {
-                        case modele.item.Color.Red:
-                            g.setColor(Color.RED);
-                            break;
-                        case modele.item.Color.White:
-                            g.setColor(Color.WHITE);
-                            break;
-                        case modele.item.Color.Green:
-                            g.setColor(Color.GREEN);
-                            break;
-                        case modele.item.Color.Blue:
-                            g.setColor(Color.BLUE);
-                            break;
-                        case modele.item.Color.Yellow:
-                            g.setColor(Color.YELLOW);
-                            break;
-                        case modele.item.Color.Purple:
-                            g.setColor(new Color(128, 0, 128));
-                            break;
-                        case modele.item.Color.Cyan:
-                            g.setColor(Color.CYAN);
-                            break;
+                        case Red:    g2d.setColor(Color.RED); break;
+                        case White:  g2d.setColor(Color.WHITE); break;
+                        case Green:  g2d.setColor(Color.GREEN); break;
+                        case Blue:   g2d.setColor(Color.BLUE); break;
+                        case Yellow: g2d.setColor(Color.YELLOW); break;
+                        case Purple: g2d.setColor(new Color(128, 0, 128)); break;
+                        case Cyan:   g2d.setColor(Color.CYAN); break;
                     }
-                    // création des autres formes
+
                     switch (ss) {
-                        case SubShape.Carre:
-                            g.fillRect(xFront + (widthFront / 2) * ((i >> 1) ^ 1), yFront + (heigthFront / 2) * ((i & 1) ^ ((i >> 1) & 1)), widthFront / 2, heigthFront / 2);
+                        case Carre:
+                            int gap = 2;
+                            int qx = (i == 0 || i == 1) ? centerX + gap : centerX - r;
+                            int qy = (i == 0 || i == 3) ? centerY - r : centerY + gap;
+                            g2d.fillRect(qx, qy, r - gap, r - gap);
                             break;
+
                         case Circle:
-                            g.fillOval(xFront + (widthFront / 2) * ((i >> 1) ^ 1), yFront + (heigthFront / 2) * ((i & 1) ^ ((i >> 1) & 1)), widthFront / 2, heigthFront / 2);
+                            int cGap = 2;
+                            int clipX = (i == 0 || i == 1) ? centerX + cGap : centerX - r;
+                            int clipY = (i == 0 || i == 3) ? centerY - r : centerY + cGap;
+                            Shape oldClip = g2d.getClip();
+                            g2d.setClip(clipX, clipY, r - cGap, r - cGap);
+                            g2d.fillArc(centerX - r, centerY - r, 2 * r, 2 * r, circleStartAngles[i], 90);
+                            g2d.setClip(oldClip);
                             break;
+
                         case Star:
-                            int sx = xFront + (widthFront / 2) * ((i >> 1) ^ 1);
-                            int sy = yFront + (heigthFront / 2) * ((i & 1) ^ ((i >> 1) & 1));
-                            int sw = widthFront / 2;
-                            int sh = heigthFront / 2;
-                            g.fillPolygon(
-                                    new int[]{sx + sw/2, sx + sw, sx + sw/2, sx},
-                                    new int[]{sy, sy + sh/2, sy + sh, sy + sh/2},
-                                    4
-                            );
+                            int narrow = (int)(r * 0.35);
+                            int[] sx, sy;
+                            switch(i) {
+                                case 0:
+                                    sx = new int[]{centerX, centerX + narrow, centerX + r, centerX};
+                                    sy = new int[]{centerY, centerY, centerY - r, centerY - narrow};
+                                    break;
+                                case 1:
+                                    sx = new int[]{centerX, centerX + narrow, centerX + r, centerX};
+                                    sy = new int[]{centerY, centerY, centerY + r, centerY + narrow};
+                                    break;
+                                case 2:
+                                    sx = new int[]{centerX, centerX - narrow, centerX - r, centerX};
+                                    sy = new int[]{centerY, centerY, centerY + r, centerY + narrow};
+                                    break;
+                                default:
+                                    sx = new int[]{centerX, centerX - narrow, centerX - r, centerX};
+                                    sy = new int[]{centerY, centerY, centerY - r, centerY - narrow};
+                                    break;
+                            }
+                            g2d.fillPolygon(sx, sy, 4);
                             break;
+
                         case Fan:
-                            g.fillArc(xFront + (widthFront / 2) * ((i >> 1) ^ 1), yFront + (heigthFront / 2) * ((i & 1) ^ ((i >> 1) & 1)), widthFront / 2, heigthFront / 2, 0, 90);
+                            switch(i) {
+                                case 0:
+                                    g2d.fillArc(centerX, centerY - r, 2 * r, 2 * r, 90, 90);
+                                    break;
+                                case 1:
+                                    g2d.fillArc(centerX - r, centerY, 2 * r, 2 * r, 0, 90);
+                                    break;
+                                case 2:
+                                    g2d.fillArc(centerX - 2 * r, centerY - r, 2 * r, 2 * r, 270, 90);
+                                    break;
+                                case 3:
+                                    g2d.fillArc(centerX - r, centerY - 2 * r, 2 * r, 2 * r, 180, 90);
+                                    break;
+                            }
                             break;
                     }
                 }
