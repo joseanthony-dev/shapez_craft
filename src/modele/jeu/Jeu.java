@@ -7,11 +7,20 @@ public class Jeu extends Thread{
     private Plateau plateau;
     //On initialise l'outil de départ qui sera le tapis
     private Outil outilSelectionne = Outil.TAPIS;
+    private boolean enPause = false;
 
     public Jeu() {
         plateau = new Plateau();
         plateau.setMachine(7, 8, new Livraison());
         start();
+    }
+
+    public void togglePause() {
+        enPause = !enPause;
+    }
+
+    public boolean isEnPause() {
+        return enPause;
     }
 
     public Plateau getPlateau() {
@@ -123,7 +132,9 @@ public class Jeu extends Thread{
     public void jouerPartie() {
         while(true) {
             try {
-                plateau.run();
+                if(! enPause){
+                    plateau.run();
+                }
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

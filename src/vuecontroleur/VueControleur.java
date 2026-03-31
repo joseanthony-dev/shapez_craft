@@ -59,6 +59,9 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoPeintureGauche;
     private Image icoPeintureDroit;
 
+    // pour montrer que c'est en pause
+    private JLabel labelPause;
+
     //Icones pour le rond
     private Image icoDecoupeur;
     private JComponent grilleIP;
@@ -164,6 +167,9 @@ public class VueControleur extends JFrame implements Observer {
             public void keyPressed(java.awt.event.KeyEvent e) {
                 if (e.getKeyCode() == java.awt.event.KeyEvent.VK_R && mouseX >= 0 && mouseY >= 0) {
                     jeu.tournerMachine(mouseX, mouseY);
+                } else if (e.getKeyCode() == java.awt.event.KeyEvent.VK_SPACE) {
+                    jeu.togglePause();
+                    labelPause.setVisible(jeu.isEnPause());
                 }
             }
         });
@@ -209,11 +215,17 @@ public class VueControleur extends JFrame implements Observer {
         panneauOutils.add(btnPeinture); // On incorpore notre bouton peubture dans le panneau créer
 
         // Jlabel (légende des touches de l'application ajouter au sud en bas de la fenetre)
-        JLabel legende = new JLabel("  Clic droit : Supprimer  |  R : Tourner  |  Clic gauche : Placer  ");
+        JLabel legende = new JLabel("  Clic droit : Supprimer  |  R : Tourner  |  Clic gauche : Placer  |  Espace : Pause  ");
         legende.setHorizontalAlignment(SwingConstants.CENTER);
         legende.setFont(new Font("Arial", Font.BOLD, 13));
         legende.setBorder(BorderFactory.createEtchedBorder());
         add(legende, BorderLayout.SOUTH);
+
+        labelPause = new JLabel("JEU EN PAUSE", SwingConstants.CENTER);
+        labelPause.setFont(new Font("Arial", Font.BOLD, 60));
+        labelPause.setForeground(java.awt.Color.RED);
+        labelPause.setVisible(false);
+        setGlassPane(labelPause);
 
         // On réduit la taille de la boite à outils
         panneauOutils.setPreferredSize(new Dimension(250, 0));
