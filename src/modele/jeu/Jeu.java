@@ -49,6 +49,8 @@ public class Jeu extends Thread{
      * @param y
      */
     public void tournerMachine(int x, int y) {
+        // Protection si jeu en pause
+        if (enPause) return;
         Machine m = plateau.getCases()[x][y].getMachine();
         if (m != null) {
             m.tourner();
@@ -57,6 +59,8 @@ public class Jeu extends Thread{
     }
 
     public void supprimerMachine(int x, int y) {
+        // Protection si jeu en pause
+        if (enPause) return;
         if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
         plateau.setMachine(x, y, null);
     }
@@ -67,6 +71,8 @@ public class Jeu extends Thread{
      * @param y indique la coordonnée y de la case du plateau
      */
     public void press(int x, int y) {
+        // Protection si jeu en pause
+        if (enPause) return;
         // Protection contre le posage de n'importer quoi sur la zone de livraison
         if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
         //Protection contre le posage d'autre chose que la mine sur les couleurs
@@ -99,6 +105,8 @@ public class Jeu extends Thread{
      * @param y indique la coordonnée y de la case du plateau
      */
     public void slide(int x, int y) {
+        // Protection si jeu en pause
+        if (enPause) return;
         // Protection contre le posage de n'importer quoi sur la zone de livraison
         if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
         //Protection contre le posage d'autre chose que la mine sur les couleurs
