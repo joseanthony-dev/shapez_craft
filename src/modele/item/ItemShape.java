@@ -15,14 +15,17 @@ public class ItemShape extends Item {
      * @serial Tableau stockant les 4 cadrants de l'item
      */
     private SubShape[] tabSubShapes;
+
     /**
      * @serial Tableau stockant les 4 couleurs de l'item
      */
     private Color[] tabColors;
+
     /**
      * @serial Enumération définissant les couches de l'item
      */
     public enum Layer {one, two, three};
+
     /**
      * @serial String permettant de stocker le code de l'item
      */

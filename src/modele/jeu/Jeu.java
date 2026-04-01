@@ -1,34 +1,68 @@
+/**
+ * Fichier de classe définissant le jeu
+ * @author JOSE Anthony
+ * @since 2026-03-18
+ * @version 1.0
+ * @see modele.jeu
+ * @see modele.plateau
+ */
 package modele.jeu;
-
 import modele.plateau.*;
 
+/**
+ * Classe Jeu permettant de jouer une partie
+ */
 public class Jeu extends Thread{
+    /**
+     * @serial Définit un attribut plateau
+     */
     private Plateau plateau;
-    //On initialise l'outil de départ qui sera le tapis
+
+    /**
+     * @serial Définit l'outil sélectionné dans la barre d'outil par défaut, le tapis
+     */
     private Outil outilSelectionne = Outil.TAPIS;
+
+    /**
+     * @serial Booléan permettant de mettre en pause le jeu, de base sur false
+     */
     private boolean enPause = false;
 
+    /**
+     * Constructeur permettant de créer un plateau et d'ajouter la zone de livraison statique
+     */
     public Jeu() {
         plateau = new Plateau();
         plateau.setMachine(7, 8, new Livraison());
         start();
     }
 
+    /**
+     * Méthode permettant d'inverse l'état du booléan afin de mettre en pause la partie
+     */
     public void togglePause() {
         enPause = !enPause;
     }
 
+    /**
+     * Fonction permettant de retourner l'état actuel du booléan
+     * @return l'état du booléan en pause
+     */
     public boolean isEnPause() {
         return enPause;
     }
 
+    /**
+     * Méthode permettant de récupérer l'état actuel du plateau
+     * @return le plateau actuellement utilisé par le jeu
+     */
     public Plateau getPlateau() {
         return plateau;
     }
 
     /**
-     * Permet de retourner (connaitre) l'outil actuellement utilisé
-     * @return une énumération d'outil, l'outil actuellement en cours
+     * Permet de retourner l'outil actuellement utilisé
+     * @return l'outil actuellement en cours défini dans l'énumération
      */
     public Outil getOutilSelectionne() {
         return outilSelectionne;
@@ -36,19 +70,18 @@ public class Jeu extends Thread{
 
     /**
      * Permet de mettre à jour la variable outil pour un nouvel outil sélectionné
-     * @param outil définira le nouvel outil utilisé
+     * @param outil définira le nouvel outil à utilisé
      */
     public void setOutilSelectionne(Outil outil) {
         this.outilSelectionne = outil;
     }
 
     /**
-     * Méthode permettant de faire pivoter une machine dans toute les directions
-     * @param x
-     * @param y
+     * Méthode permettant de faire pivoter une machine dans toutes les directions avec une protection si le jeu est en pause
+     * @param x définit la coordonnée x de la machine
+     * @param y définit la coordonnée y de la machine
      */
     public void tournerMachine(int x, int y) {
-        // Protection si jeu en pause
         if (enPause) return;
         Machine m = plateau.getCases()[x][y].getMachine();
         if (m != null) {
@@ -57,24 +90,25 @@ public class Jeu extends Thread{
         }
     }
 
+    /**
+     * Méthode permettant de supprimer une machine en la mettant à null avec une protection si le jeu est en pause ou si la machine est une livraison qu'on ne peut pas supprimer
+     * @param x définit la coordonnée x de la machine
+     * @param y définit la coordonnée y de la machine
+     */
     public void supprimerMachine(int x, int y) {
-        // Protection si jeu en pause
         if (enPause) return;
         if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
         plateau.setMachine(x, y, null);
     }
 
     /**
-     * Permet maintenant en fonction de l'outil choisit de poser un tapis, une mine, une poubelle ou bien de faire disparaitre la machine
-     * @param x indique la coordonnée x de la case du plateau
-     * @param y indique la coordonnée y de la case du plateau
+     * Permet de mettre en place une machine en clickant en fonction de l'outil choisit avec une protection si le jeu est en pause, ou si la case contient déjà une livraison. Une protection également est faite pour l'outil mine qu'on ne peut poser que sur des gisements
+     * @param x indique la coordonnée x de la machine
+     * @param y indique la coordonnée y de la machine
      */
     public void press(int x, int y) {
-        // Protection si jeu en pause
         if (enPause) return;
-        // Protection contre le posage de n'importer quoi sur la zone de livraison
         if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
-        //Protection contre le posage d'autre chose que la mine sur les couleurs
         if (plateau.getCases()[x][y].getGisement() != null && outilSelectionne != Outil.MINE) return;
         switch (outilSelectionne) {
             case TAPIS:
@@ -99,16 +133,13 @@ public class Jeu extends Thread{
     }
 
     /**
-     * Permet maintenant en fonction de l'outil choisit de poser un tapis, une mine, une poubelle ou bien de faire disparaitre la machine si le clic est maintenu
-     * @param x indique la coordonnée x de la case du plateau
-     * @param y indique la coordonnée y de la case du plateau
+     * Permet de mettre en place une machine en slidant en fonction de l'outil choisit avec une protection si le jeu est en pause, ou si la case contient déjà une livraison. Une protection également est faite pour l'outil mine qu'on ne peut poser que sur des gisements
+     * @param x indique la coordonnée x de la machine
+     * @param y indique la coordonnée y de la machine
      */
     public void slide(int x, int y) {
-        // Protection si jeu en pause
         if (enPause) return;
-        // Protection contre le posage de n'importer quoi sur la zone de livraison
         if (plateau.getCases()[x][y].getMachine() instanceof Livraison) return;
-        //Protection contre le posage d'autre chose que la mine sur les couleurs
         if (plateau.getCases()[x][y].getGisement() != null && outilSelectionne != Outil.MINE) return;
         switch (outilSelectionne) {
             case TAPIS:
@@ -132,10 +163,16 @@ public class Jeu extends Thread{
         }
     }
 
+    /**
+     * Méthode permettant de lancer une partie
+     */
     public void run() {
         jouerPartie();
     }
 
+    /**
+     * Méthode permettant de jouer une partie avec une protection pour arrêter le jeu si on fait pause
+     */
     public void jouerPartie() {
         while(true) {
             try {
