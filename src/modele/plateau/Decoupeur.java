@@ -5,7 +5,6 @@
  * @version 1.0
  * @see modele.plateau
  * @see modele.item.ItemShape
- * @see
  */
 package modele.plateau;
 import modele.item.ItemShape;
