@@ -1,5 +1,5 @@
 /**
- * Fichier d'énumération définissant les outils possibles
+ * Fichier de classe définissant une case de plateau
  * @author JOSE Anthony
  * @since 2026-03-18
  * @version 1.0
