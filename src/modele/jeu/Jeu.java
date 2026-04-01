@@ -140,7 +140,7 @@ public class Jeu extends Thread{
     public void jouerPartie() {
         while(true) {
             try {
-                if(! enPause){
+                if(!enPause){
                     plateau.run();
                 }
                 Thread.sleep(1000);

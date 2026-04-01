@@ -1,6 +1,7 @@
 package vuecontroleur;
 import java.awt.*;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Observable;
@@ -170,6 +171,9 @@ public class VueControleur extends JFrame implements Observer {
                 } else if (e.getKeyCode() == java.awt.event.KeyEvent.VK_SPACE) {
                     jeu.togglePause();
                     labelPause.setVisible(jeu.isEnPause());
+                    // Si la touche échap est préssée, on tue l'application
+                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    System.exit(0);
                 }
             }
         });
@@ -215,7 +219,7 @@ public class VueControleur extends JFrame implements Observer {
         panneauOutils.add(btnPeinture); // On incorpore notre bouton peubture dans le panneau créer
 
         // Jlabel (légende des touches de l'application ajouter au sud en bas de la fenetre)
-        JLabel legende = new JLabel("  Clic droit : Supprimer  |  R : Tourner  |  Clic gauche : Placer  |  Espace : Pause  ");
+        JLabel legende = new JLabel("  Clic droit : Supprimer  |  R : Tourner  |  Clic gauche : Placer  |  Espace : Pause  | Escape : Quitter ");
         legende.setHorizontalAlignment(SwingConstants.CENTER);
         legende.setFont(new Font("Arial", Font.BOLD, 13));
         legende.setBorder(BorderFactory.createEtchedBorder());
@@ -226,6 +230,13 @@ public class VueControleur extends JFrame implements Observer {
         labelPause.setForeground(java.awt.Color.RED);
         labelPause.setVisible(false);
         setGlassPane(labelPause);
+
+        // On met la fenêtre en plein écran
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // On enlève les boutons réduire, agrandir et fermer par défault sous Windows
+        this.setUndecorated(true);
+        // On empêche le redimenssionement de la fenêtre
+        this.setResizable(false);
 
         // On réduit la taille de la boite à outils
         panneauOutils.setPreferredSize(new Dimension(250, 0));
