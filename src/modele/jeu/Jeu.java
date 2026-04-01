@@ -1,7 +1,6 @@
 package modele.jeu;
 
 import modele.plateau.*;
-import modele.item.ItemShape;
 
 public class Jeu extends Thread{
     private Plateau plateau;

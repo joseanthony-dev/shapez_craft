@@ -1,10 +1,7 @@
 package modele.plateau;
 
 import modele.item.Item;
-import modele.item.ItemShape;
-
 import java.util.LinkedList;
-import java.util.Queue;
 
 public abstract class Machine implements Runnable {
 

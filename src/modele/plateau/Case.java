@@ -6,7 +6,6 @@
 package modele.plateau;
 
 import modele.item.Item;
-import modele.item.ItemShape;
 
 public class Case {
 

@@ -1,8 +1,5 @@
 package modele.plateau;
 
-import modele.plateau.Direction;
-import modele.item.ItemShape;
-
 public class Tapis extends Machine{
 
     private Direction coinEntree;
