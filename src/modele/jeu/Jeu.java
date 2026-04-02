@@ -129,6 +129,9 @@ public class Jeu extends Thread{
             case PEINTURE:
                 plateau.setMachine(x, y, new Peinture());
                 break;
+            case MELANGEUR:
+                plateau.setMachine(x, y, new Melangeur());
+                break;
         }
     }
 
@@ -159,6 +162,9 @@ public class Jeu extends Thread{
                 break;
             case PEINTURE:
                 plateau.setMachine(x, y, new Peinture());
+                break;
+            case MELANGEUR:
+                plateau.setMachine(x, y, new Melangeur());
                 break;
         }
     }

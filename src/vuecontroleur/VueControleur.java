@@ -59,6 +59,11 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoPeintureGauche;
     private Image icoPeintureDroit;
 
+    private Image icoMelangeurHaut;
+    private Image icoMelangeurBas;
+    private Image icoMelangeurGauche;
+    private Image icoMelangeurDroit ;
+
     // pour montrer que c'est en pause
     private JLabel labelPause;
 
@@ -113,7 +118,11 @@ public class VueControleur extends JFrame implements Observer {
         icoPeintureBas = new ImageIcon("./data/sprites/buildings/painter_bas.png").getImage();
         icoPeintureGauche = new ImageIcon("./data/sprites/buildings/painter_gauche.png").getImage();
         icoPeintureDroit = new ImageIcon("./data/sprites/buildings/painter.png").getImage();
-
+        // Icones du mixer
+        icoMelangeurHaut = new ImageIcon("./data/sprites/buildings/mixer.png").getImage();
+        icoMelangeurBas = new ImageIcon("./data/sprites/buildings/mixer_bas.png").getImage();
+        icoMelangeurGauche = new ImageIcon("./data/sprites/buildings/mixer_gauche.png").getImage();
+        icoMelangeurDroit = new ImageIcon("./data/sprites/buildings/mixer_droit.png").getImage();
     }
 
     private void placerLesComposantsGraphiques() {
@@ -180,13 +189,14 @@ public class VueControleur extends JFrame implements Observer {
         requestFocus();
 
         JPanel panneauOutils = new JPanel(); // On définit notre panneau
-        panneauOutils.setLayout(new GridLayout(6, 1)); // On met une colonne et 4 item pour l'instant
+        panneauOutils.setLayout(new GridLayout(7, 1)); // On met une colonne et 4 item pour l'instant
         JButton btnTapis = new JButton(); // On créer notre bouton pour le tapis
         JButton btnMine = new JButton(); // On créer notre bouton pour la mine
         JButton btnPoubelle = new JButton(); // On créer notre bouton pour la poubelle
         JButton btnRotateur = new JButton(); // On créer notre bouton pour sélectionner le rotateur
         JButton btnDecoupeur = new JButton(); // On créer notre bouton pour sélectionner le découpeur
         JButton btnPeinture = new JButton(); // On créer notre bouton pour la peinture
+        JButton btnMelangeur = new JButton(); // On créer notre bouton pour le mixer
 
         btnRotateur.setIcon(new ImageIcon("./data/sprites/buildings/rotater.png"));
         btnTapis.setIcon(new ImageIcon("./data/sprites/buildings/belt_top.png"));
@@ -194,6 +204,7 @@ public class VueControleur extends JFrame implements Observer {
         btnPoubelle.setIcon(new ImageIcon("./data/sprites/buildings/trash.png"));
         btnDecoupeur.setIcon(new ImageIcon("./data/sprites/buildings/cutter.png"));
         btnPeinture.setIcon(new ImageIcon("./data/sprites/buildings/painter.png"));
+        btnMelangeur.setIcon(new ImageIcon("./data/sprites/buildings/mixer.png"));
 
         btnTapis.addActionListener(e -> jeu.setOutilSelectionne(Outil.TAPIS)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur le tapis
         btnMine.addActionListener(e -> jeu.setOutilSelectionne(Outil.MINE)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la mine
@@ -201,6 +212,7 @@ public class VueControleur extends JFrame implements Observer {
         btnRotateur.addActionListener(e -> jeu.setOutilSelectionne(Outil.ROTATEUR)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur le rotateur
         btnDecoupeur.addActionListener(e -> jeu.setOutilSelectionne(Outil.DECOUPEUR)); // On ajoute notre listener sur notre bouton de découpage
         btnPeinture.addActionListener(e -> jeu.setOutilSelectionne(Outil.PEINTURE)); // On ajoute notre listener sur notre bouton de peinture
+        btnMelangeur.addActionListener(e -> jeu.setOutilSelectionne(Outil.MELANGEUR)); // On ajoute notre listener sur notre bouton mixer
 
         // Permet d'éviter des soucis de focus pour la touche R de rotation
         btnTapis.setFocusable(false);
@@ -209,6 +221,7 @@ public class VueControleur extends JFrame implements Observer {
         btnRotateur.setFocusable(false);
         btnDecoupeur.setFocusable(false);
         btnPeinture.setFocusable(false);
+        btnMelangeur.setFocusable(false);
 
         panneauOutils.add(btnTapis); // On incorpore notre bouton tapis dans le panneau créer
         panneauOutils.add(btnMine); // On incorpore notre bouton mine dans le panneau créer
@@ -216,6 +229,7 @@ public class VueControleur extends JFrame implements Observer {
         panneauOutils.add(btnRotateur); // On incorpore notre bouton rotation dans le panneau créer
         panneauOutils.add(btnDecoupeur); // On incorpore notre bouton découpeur dans le panneau créer
         panneauOutils.add(btnPeinture); // On incorpore notre bouton peubture dans le panneau créer
+        panneauOutils.add(btnMelangeur); // On incorpore notre bouton mixer dans le panneau créer
 
         // Jlabel (légende des touches de l'application ajouter au sud en bas de la fenetre)
         JLabel legende = new JLabel("  Clic droit : Supprimer  |  R : Tourner  |  Clic gauche : Placer  |  Espace : Pause  | Escape : Quitter ");
@@ -366,6 +380,13 @@ public class VueControleur extends JFrame implements Observer {
                             case South:
                                 tabIP[x][y].setBackground(icoPeintureBas);
                                 break;
+                        }
+                    } else if (m instanceof Melangeur) {
+                        switch (m.getDirection()) {
+                            case North: tabIP[x][y].setBackground(icoMelangeurHaut); break;
+                            case East:  tabIP[x][y].setBackground(icoMelangeurDroit); break;
+                            case West:  tabIP[x][y].setBackground(icoMelangeurGauche); break;
+                            case South: tabIP[x][y].setBackground(icoMelangeurBas); break;
                         }
                     }
                     Item current = m.getCurrent();

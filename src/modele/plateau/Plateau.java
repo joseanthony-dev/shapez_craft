@@ -37,13 +37,10 @@ public class Plateau extends Observable implements Runnable {
             }
         }
         // On ajoute un gisement fixe de chaque couleure
-        grilleCases[15][9].setGisement(new ItemColor(Color.Red));
-        grilleCases[15][10].setGisement(new ItemColor(Color.White));
-        grilleCases[15][11].setGisement(new ItemColor(Color.Blue));
-        grilleCases[15][12].setGisement(new ItemColor(Color.Cyan));
-        grilleCases[15][13].setGisement(new ItemColor(Color.Green));
-        grilleCases[15][14].setGisement(new ItemColor(Color.Purple));
-        grilleCases[15][15].setGisement(new ItemColor(Color.Yellow));
+        grilleCases[15][12].setGisement(new ItemColor(Color.Red));
+        grilleCases[15][13].setGisement(new ItemColor(Color.White));
+        grilleCases[15][14].setGisement(new ItemColor(Color.Blue));
+        grilleCases[15][15].setGisement(new ItemColor(Color.Green));
         // On ajoute des gisements de formes
         grilleCases[0][12].setGisement(new ItemShape("CbCbCbCb"));  // carré rouge complet
         grilleCases[0][13].setGisement(new ItemShape("ObObObOb"));  // cercle bleu complet
