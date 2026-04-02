@@ -6,15 +6,18 @@
  * @see modele.plateau
  */
 package modele.plateau;
+import modele.jeu.Jeu;
+import modele.item.ItemShape;
 
 /**
  * Classe livraison fille de la classe machine
  */
 public class Livraison extends Machine {
-    /**
-     * @serial compteur incrémenté à chaque forme reçu
-     */
-    private int compteur = 0;
+    private Jeu jeu;
+
+    public Livraison(Jeu jeu) {
+        this.jeu = jeu;
+    }
 
     /**
      * Méthode qui incrémente le compteur seulement
@@ -22,7 +25,13 @@ public class Livraison extends Machine {
     @Override
     public void work() {
         if (!current.isEmpty()) {
-            compteur++;
+            if (current.getFirst() instanceof ItemShape) {
+                ItemShape shape = (ItemShape) current.getFirst();
+                if (jeu.getNiveauCourant() != null
+                        && shape.getCode().equals(jeu.getNiveauCourant().getCodeObjectif())) {
+                    jeu.niveauSuivant();
+                }
+            }
             current.clear();
         }
     }
@@ -33,13 +42,5 @@ public class Livraison extends Machine {
     @Override
     public void send() {
         // La livraison ne renvoie rien
-    }
-
-    /**
-     * Fonction qui renvoi la valeur du compteur actuelle
-     * @return la valeur du compteur de la zone de livraison
-     */
-    public int getCompteur() {
-        return compteur;
     }
 }

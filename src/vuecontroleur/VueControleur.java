@@ -67,6 +67,9 @@ public class VueControleur extends JFrame implements Observer {
     // pour montrer que c'est en pause
     private JLabel labelPause;
 
+    // pour la livraison
+    private JLabel labelNiveau;
+
     //Icones pour le rond
     private Image icoDecoupeur;
     private JComponent grilleIP;
@@ -244,6 +247,11 @@ public class VueControleur extends JFrame implements Observer {
         labelPause.setVisible(false);
         setGlassPane(labelPause);
 
+        labelNiveau = new JLabel("", SwingConstants.CENTER);
+        labelNiveau.setFont(new Font("Arial", Font.BOLD, 16));
+        labelNiveau.setBorder(BorderFactory.createEtchedBorder());
+        add(labelNiveau, BorderLayout.NORTH);
+
         // On met la fenêtre en plein écran
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         // On enlève les boutons réduire, agrandir et fermer par défault sous Windows
@@ -261,6 +269,12 @@ public class VueControleur extends JFrame implements Observer {
      * Il y a une grille du côté du modèle ( jeu.getGrille() ) et une grille du côté de la vue (tabIP)
      */
     private void mettreAJourAffichage() {
+        if (jeu.isPartieTerminee()) {
+            labelNiveau.setText("BRAVO ! Tous les niveaux sont termines !");
+        } else {
+            labelNiveau.setText("Niveau " + jeu.getNumeroNiveau() + " — Objectif : "
+                    + jeu.getNiveauCourant().getDescription());
+        }
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 tabIP[x][y].setBackground((Image) null);
@@ -350,7 +364,11 @@ public class VueControleur extends JFrame implements Observer {
                         tabIP[x][y].setBackground(icoPoubelle);
                     } else if (m instanceof Livraison) {
                         tabIP[x][y].setBackground(icoLivraison);
-                        tabIP[x][y].setTexte(String.valueOf(((Livraison) m).getCompteur()));
+                        if (jeu.isPartieTerminee()) {
+                            tabIP[x][y].setTexte("GG !");
+                        } else {
+                            tabIP[x][y].setTexte("Niv." + jeu.getNumeroNiveau());
+                        }
                     } else if (m instanceof Mine) {
                         switch (m.getDirection()){
                             case North:

@@ -13,6 +13,13 @@ import modele.plateau.*;
  * Classe Jeu permettant de jouer une partie
  */
 public class Jeu extends Thread{
+    private Niveau[] niveaux = {
+            new Niveau("CbCbCbCb", "Carre blanc"),
+            new Niveau("OrOrOrOr", "Cercle rouge"),
+            new Niveau("SpSpSpSp", "Etoile violette")
+    };
+    private int niveauActuel = 0;
+    private boolean partieTerminee = false;
     /**
      * @serial Définit un attribut plateau
      */
@@ -33,8 +40,30 @@ public class Jeu extends Thread{
      */
     public Jeu() {
         plateau = new Plateau();
-        plateau.setMachine(7, 8, new Livraison());
+        plateau.setMachine(7, 8, new Livraison(this));
         start();
+    }
+
+    public Niveau getNiveauCourant() {
+        if (niveauActuel < niveaux.length) {
+            return niveaux[niveauActuel];
+        }
+        return null;
+    }
+
+    public boolean isPartieTerminee() {
+        return partieTerminee;
+    }
+
+    public void niveauSuivant() {
+        niveauActuel++;
+        if (niveauActuel >= niveaux.length) {
+            partieTerminee = true;
+        }
+    }
+
+    public int getNumeroNiveau() {
+        return niveauActuel + 1;
     }
 
     /**
@@ -182,7 +211,7 @@ public class Jeu extends Thread{
     public void jouerPartie() {
         while(true) {
             try {
-                if(!enPause){
+                if(!enPause && !partieTerminee){
                     plateau.run();
                 }
                 Thread.sleep(1000);
