@@ -64,6 +64,11 @@ public class VueControleur extends JFrame implements Observer {
     private Image icoMelangeurGauche;
     private Image icoMelangeurDroit ;
 
+    private Image icoEmpileurHaut;
+    private Image icoEmpileurBas;
+    private Image icoEmpileurGauche;
+    private Image icoEmpileurDroit;
+
     // pour montrer que c'est en pause
     private JLabel labelPause;
 
@@ -126,6 +131,11 @@ public class VueControleur extends JFrame implements Observer {
         icoMelangeurBas = new ImageIcon("./data/sprites/buildings/mixer_bas.png").getImage();
         icoMelangeurGauche = new ImageIcon("./data/sprites/buildings/mixer_gauche.png").getImage();
         icoMelangeurDroit = new ImageIcon("./data/sprites/buildings/mixer_droit.png").getImage();
+        // Icones de l'empileur
+        icoEmpileurHaut = new ImageIcon("./data/sprites/buildings/stacker.png").getImage();
+        icoEmpileurBas = new ImageIcon("./data/sprites/buildings/stacker_bas.png").getImage();
+        icoEmpileurGauche = new ImageIcon("./data/sprites/buildings/stacker_gauche.png").getImage();
+        icoEmpileurDroit = new ImageIcon("./data/sprites/buildings/stacker_droit.png").getImage();
     }
 
     private void placerLesComposantsGraphiques() {
@@ -192,7 +202,7 @@ public class VueControleur extends JFrame implements Observer {
         requestFocus();
 
         JPanel panneauOutils = new JPanel(); // On définit notre panneau
-        panneauOutils.setLayout(new GridLayout(7, 1)); // On met une colonne et 4 item pour l'instant
+        panneauOutils.setLayout(new GridLayout(8, 1)); // On met une colonne et 4 item pour l'instant
         JButton btnTapis = new JButton(); // On créer notre bouton pour le tapis
         JButton btnMine = new JButton(); // On créer notre bouton pour la mine
         JButton btnPoubelle = new JButton(); // On créer notre bouton pour la poubelle
@@ -200,6 +210,7 @@ public class VueControleur extends JFrame implements Observer {
         JButton btnDecoupeur = new JButton(); // On créer notre bouton pour sélectionner le découpeur
         JButton btnPeinture = new JButton(); // On créer notre bouton pour la peinture
         JButton btnMelangeur = new JButton(); // On créer notre bouton pour le mixer
+        JButton btnEmpileur = new JButton();
 
         btnRotateur.setIcon(new ImageIcon("./data/sprites/buildings/rotater.png"));
         btnTapis.setIcon(new ImageIcon("./data/sprites/buildings/belt_top.png"));
@@ -208,6 +219,7 @@ public class VueControleur extends JFrame implements Observer {
         btnDecoupeur.setIcon(new ImageIcon("./data/sprites/buildings/cutter.png"));
         btnPeinture.setIcon(new ImageIcon("./data/sprites/buildings/painter.png"));
         btnMelangeur.setIcon(new ImageIcon("./data/sprites/buildings/mixer.png"));
+        btnEmpileur.setIcon(new ImageIcon("./data/sprites/buildings/stacker.png"));
 
         btnTapis.addActionListener(e -> jeu.setOutilSelectionne(Outil.TAPIS)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur le tapis
         btnMine.addActionListener(e -> jeu.setOutilSelectionne(Outil.MINE)); // On ajoute notre listener sur le bouton, si il est cliqué on met l'outil sur la mine
@@ -216,6 +228,7 @@ public class VueControleur extends JFrame implements Observer {
         btnDecoupeur.addActionListener(e -> jeu.setOutilSelectionne(Outil.DECOUPEUR)); // On ajoute notre listener sur notre bouton de découpage
         btnPeinture.addActionListener(e -> jeu.setOutilSelectionne(Outil.PEINTURE)); // On ajoute notre listener sur notre bouton de peinture
         btnMelangeur.addActionListener(e -> jeu.setOutilSelectionne(Outil.MELANGEUR)); // On ajoute notre listener sur notre bouton mixer
+        btnEmpileur.addActionListener(e -> jeu.setOutilSelectionne(Outil.EMPILEUR));
 
         // Permet d'éviter des soucis de focus pour la touche R de rotation
         btnTapis.setFocusable(false);
@@ -225,6 +238,7 @@ public class VueControleur extends JFrame implements Observer {
         btnDecoupeur.setFocusable(false);
         btnPeinture.setFocusable(false);
         btnMelangeur.setFocusable(false);
+        btnEmpileur.setFocusable(false);
 
         panneauOutils.add(btnTapis); // On incorpore notre bouton tapis dans le panneau créer
         panneauOutils.add(btnMine); // On incorpore notre bouton mine dans le panneau créer
@@ -233,6 +247,7 @@ public class VueControleur extends JFrame implements Observer {
         panneauOutils.add(btnDecoupeur); // On incorpore notre bouton découpeur dans le panneau créer
         panneauOutils.add(btnPeinture); // On incorpore notre bouton peubture dans le panneau créer
         panneauOutils.add(btnMelangeur); // On incorpore notre bouton mixer dans le panneau créer
+        panneauOutils.add(btnEmpileur);
 
         // Jlabel (légende des touches de l'application ajouter au sud en bas de la fenetre)
         JLabel legende = new JLabel("  Clic droit : Supprimer  |  R : Tourner  |  Clic gauche : Placer  |  Espace : Pause  | Escape : Quitter ");
@@ -405,6 +420,21 @@ public class VueControleur extends JFrame implements Observer {
                             case East:  tabIP[x][y].setBackground(icoMelangeurDroit); break;
                             case West:  tabIP[x][y].setBackground(icoMelangeurGauche); break;
                             case South: tabIP[x][y].setBackground(icoMelangeurBas); break;
+                        }
+                    } else if (m instanceof Empileur) {
+                        switch (m.getDirection()) {
+                            case North:
+                                tabIP[x][y].setBackground(icoEmpileurHaut);
+                                break;
+                            case East:
+                                tabIP[x][y].setBackground(icoEmpileurDroit);
+                                break;
+                            case West:
+                                tabIP[x][y].setBackground(icoEmpileurGauche);
+                                break;
+                            case South:
+                                tabIP[x][y].setBackground(icoEmpileurBas);
+                                break;
                         }
                     }
                     Item current = m.getCurrent();
