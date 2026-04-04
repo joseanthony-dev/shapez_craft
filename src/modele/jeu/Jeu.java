@@ -167,6 +167,11 @@ public class Jeu extends Thread{
         }
     }
 
+    public void setNiveauActuel(int n) {
+        this.niveauActuel = n;
+        this.partieTerminee = (n >= niveaux.length);
+    }
+
     /**
      * Permet de mettre en place une machine en slidant en fonction de l'outil choisit avec une protection si le jeu est en pause, ou si la case contient déjà une livraison. Une protection également est faite pour l'outil mine qu'on ne peut poser que sur des gisements
      * @param x indique la coordonnée x de la machine

@@ -195,6 +195,27 @@ public class VueControleur extends JFrame implements Observer {
                     // Si la touche échap est préssée, on tue l'application
                 } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     System.exit(0);
+                } else if (e.getKeyCode() == KeyEvent.VK_S && e.isControlDown()) {
+                    JFileChooser fc = new JFileChooser();
+                    fc.setDialogTitle("Sauvegarder la partie");
+                    if (fc.showSaveDialog(VueControleur.this) == JFileChooser.APPROVE_OPTION) {
+                        try {
+                            modele.jeu.Sauvegarde.sauvegarder(jeu, fc.getSelectedFile());
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(VueControleur.this, "Erreur : " + ex.getMessage());
+                        }
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_L && e.isControlDown()) {
+                    JFileChooser fc = new JFileChooser();
+                    fc.setDialogTitle("Charger une partie");
+                    if (fc.showOpenDialog(VueControleur.this) == JFileChooser.APPROVE_OPTION) {
+                        try {
+                            modele.jeu.Sauvegarde.charger(jeu, fc.getSelectedFile());
+                            mettreAJourAffichage();
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(VueControleur.this, "Erreur : " + ex.getMessage());
+                        }
+                    }
                 }
             }
         });
@@ -250,7 +271,7 @@ public class VueControleur extends JFrame implements Observer {
         panneauOutils.add(btnEmpileur);
 
         // Jlabel (légende des touches de l'application ajouter au sud en bas de la fenetre)
-        JLabel legende = new JLabel("  Clic droit : Supprimer  |  R : Tourner  |  Clic gauche : Placer  |  Espace : Pause  | Escape : Quitter ");
+        JLabel legende = new JLabel("  Clic droit : Supprimer  |  R : Tourner  |  Clic gauche : Placer  |  Espace : Pause  |  Ctrl+S : Sauvegarder  |  Ctrl+L : Charger  | Escape : Quitter ");
         legende.setHorizontalAlignment(SwingConstants.CENTER);
         legende.setFont(new Font("Arial", Font.BOLD, 13));
         legende.setBorder(BorderFactory.createEtchedBorder());
