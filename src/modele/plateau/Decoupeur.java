@@ -7,19 +7,37 @@
  * @see modele.item.ItemShape
  */
 package modele.plateau;
+
 import modele.item.ItemShape;
 
 /**
- * Classe définissant la machine Découpeur héritante de Machine
+ * Classe Decoupeur héritante de {@link Machine}, représentant un découpeur
+ * qui coupe les formes ({@link ItemShape}) verticalement en deux moitiés.
+ * Le découpeur possède deux sorties :
+ * <ul>
+ *     <li>Sortie avant (direction {@link Machine#d}) : la moitié droite (quadrants 0 et 1)</li>
+ *     <li>Sortie gauche (direction {@link Direction#direction_gauche()}) : la moitié gauche (quadrants 2 et 3)</li>
+ * </ul>
+ * La moitié gauche est stockée temporairement dans {@link #moitieGauche} en attendant
+ * qu'une machine voisine soit disponible pour la recevoir.
+ *
+ * @see Machine
+ * @see ItemShape#Cut()
  */
 public class Decoupeur extends Machine {
     /**
-     * @serial Définit la forme moitié gauche de la machine
+     * @serial Stockage temporaire de la moitié gauche de la forme découpée.
+     *         Vaut null avant la découpe ou après l'envoi réussi vers la sortie gauche.
+     *         Rempli par {@link #work()} lors de l'appel à {@link ItemShape#Cut()}.
      */
     private ItemShape moitieGauche = null;
 
     /**
-     * Méthode permettant de récupérer l'item actuel et de le couper
+     * Méthode de travail du découpeur qui coupe la forme en deux moitiés verticales.
+     * La découpe n'est effectuée que si la machine contient un {@link ItemShape}
+     * et que la moitié gauche précédente a déjà été envoyée ({@link #moitieGauche} == null).
+     * Appelle {@link ItemShape#Cut()} qui modifie la forme actuelle en moitié droite
+     * et retourne la moitié gauche stockée dans {@link #moitieGauche}.
      */
     @Override
     public void work() {
@@ -30,7 +48,13 @@ public class Decoupeur extends Machine {
     }
 
     /**
-     * Méthode permettant d'envoyer l'item à la prochaine machine, envoit la moitié droite et par la sortie et accepter seulement depuis le côté gauche à la sortie
+     * Méthode d'envoi qui transmet les deux moitiés de la forme découpée :
+     * <ol>
+     *     <li>La moitié droite est envoyée vers l'avant via {@link Machine#send()}</li>
+     *     <li>La moitié gauche est envoyée vers la sortie gauche ({@link Direction#direction_gauche()})
+     *         si une machine voisine est présente, accepte depuis cette direction et est vide</li>
+     * </ol>
+     * La moitié gauche est mise à null après un envoi réussi.
      */
     @Override
     public void send() {

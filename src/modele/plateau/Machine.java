@@ -1,5 +1,5 @@
 /**
- * Fichier de classe définissant la zone de livraison
+ * Fichier de classe abstraite définissant le comportement commun des machines
  * @author JOSE Anthony
  * @since 2026-03-18
  * @version 1.0
@@ -12,35 +12,60 @@ import modele.item.Item;
 import java.util.LinkedList;
 
 /**
- * Classe abstraite machine qui implémente runnable
+ * Classe abstraite Machine implémentant {@link Runnable}, servant de classe mère
+ * pour toutes les machines du jeu.
+ * Chaque machine possède une liste d'items ({@link #current}), une direction ({@link #d})
+ * et une référence vers sa case ({@link #c}).
+ * Le cycle de fonctionnement d'une machine se déroule en deux phases à chaque tick :
+ * <ol>
+ *     <li>{@link #work()} : traitement de l'item (rotation, découpe, mélange, etc.)</li>
+ *     <li>{@link #send()} : envoi de l'item vers la machine voisine dans la direction de sortie</li>
+ * </ol>
+ * Les sous-classes redéfinissent {@link #work()}, {@link #send()} et {@link #accepteDepuis(Direction)}
+ * pour implémenter leur comportement spécifique.
+ *
+ * @see Tapis
+ * @see Mine
+ * @see Poubelle
+ * @see Rotateur
+ * @see Decoupeur
+ * @see Peinture
+ * @see Melangeur
+ * @see Empileur
+ * @see Livraison
  */
 public abstract class Machine implements Runnable {
     /**
-     * @serial Liste qui contiendra les items
+     * @serial Liste chaînée contenant les items actuellement dans la machine.
+     *         En général, une machine ne contient qu'un seul item à la fois.
+     *         La liste est vidée après l'envoi réussi de l'item à la machine suivante.
      */
     LinkedList<Item> current;
 
     /**
-     * @serial Définit la case de la machine
+     * @serial Référence vers la case sur laquelle cette machine est posée.
+     *         Initialisée par {@link Case#setMachine(Machine)} lors du placement.
+     *         Permet à la machine d'accéder au plateau et aux cases voisines pour l'envoi d'items.
      */
     Case c;
 
     /**
-     * @serial Définit la direction par défaut vers le nord
+     * @serial Direction dans laquelle la machine est orientée, détermine la sortie principale.
+     *         Par défaut initialisée à {@link Direction#North}.
+     *         Modifiable par le joueur via {@link #tourner()}.
      */
     Direction d = Direction.North;
 
     /**
-     * Constructeur permettant d'initialiser la liste contenant les items
+     * Constructeur permettant d'initialiser la liste d'items vide
      */
-    public Machine()
-    {
+    public Machine() {
         current = new LinkedList<Item>();
     }
 
     /**
-     * Constructeur permettant d'initialiser la liste contenant les items et d'en ajouter un directement
-     * @param _item l'item que l'on veut ajouter à la liste
+     * Constructeur permettant d'initialiser la liste d'items et d'y ajouter un item directement
+     * @param _item l'item à ajouter à la liste dès la création de la machine
      */
     public Machine(Item _item) {
         this();
@@ -48,16 +73,20 @@ public abstract class Machine implements Runnable {
     }
 
     /**
-     * Méthode permettant d'initialiser la case avec une case
-     * @param _c la case qui va être affecté à l'attribut
+     * Méthode permettant d'associer la machine à une case du plateau.
+     * Appelée automatiquement par {@link Case#setMachine(Machine)} lors du placement.
+     *
+     * @param _c la case sur laquelle la machine est posée
      */
     public void setCase(Case _c) {
-        c= _c;
+        c = _c;
     }
 
     /**
-     * Fonction permettant de renvoyer le premier item de la liste
-     * @return l'item de la liste
+     * Fonction permettant de récupérer le premier item actuellement dans la machine.
+     * Utilisée par la vue pour afficher l'item transporté sur la case.
+     *
+     * @return le premier item de la liste, ou null si la machine est vide
      */
     public Item getCurrent() {
         if (current.size() > 0) {
@@ -68,34 +97,53 @@ public abstract class Machine implements Runnable {
     }
 
     /**
-     * Fonction permettant de savoir si on accepte ou non l'objet en fonction de la direction de la machine la classe machine elle, accepte tout, la fonction sera redéfini dans chaque sous machines
-     * @param provenance la direction depuis laquelle arrive l'objet
-     * @return un booléan si on peut accepter l'objet ou non
+     * Fonction permettant de déterminer si la machine accepte un item depuis une direction donnée.
+     * Par défaut, la machine accepte depuis toutes les directions.
+     * Les sous-classes redéfinissent cette méthode pour restreindre les entrées
+     * (par exemple le {@link Tapis} n'accepte que depuis l'arrière).
+     *
+     * @param provenance la direction depuis laquelle l'item arrive
+     * @return true si la machine accepte un item depuis cette direction, false sinon
      */
     public boolean accepteDepuis(Direction provenance) {
         return true;
     }
 
     /**
-     * Méthode permettant de changer la direction et donc de tourner la machine
+     * Méthode permettant de faire pivoter la machine de 90 degrés dans le sens horaire.
+     * Change la direction de la machine vers la direction suivante via {@link Direction#direction_suivante()}.
+     * Appelée par {@link modele.jeu.Jeu#tournerMachine(int, int)} lorsque le joueur appuie sur R.
      */
     public void tourner() {
         d = d.direction_suivante();
     }
 
     /**
-     * Fonction qui permet de retourner la direction de la machine, en fonction de cette direction l'affichage sera changé
-     * @return
+     * Fonction permettant de retourner la direction actuelle de la machine.
+     * Utilisée par la vue pour déterminer quel sprite directionnel afficher.
+     *
+     * @return la direction actuelle de la machine
      */
     public Direction getDirection() {
         return d;
     }
 
     /**
-     * Méthode permettant d'envoyer l'item actuellement stocké sur une ou plusieurs sorties dans la direction voulu en vérifiant si la machine voisine peut l'accepter suivant son orientation
+     * Méthode permettant d'envoyer l'item actuellement stocké vers la machine voisine
+     * dans la direction de sortie ({@link #d}).
+     * L'envoi est effectué uniquement si :
+     * <ul>
+     *     <li>La case voisine dans la direction de sortie existe</li>
+     *     <li>La case voisine contient une machine</li>
+     *     <li>La liste d'items n'est pas vide</li>
+     *     <li>La machine voisine accepte un item depuis la direction opposée
+     *         via {@link #accepteDepuis(Direction)}</li>
+     *     <li>La liste d'items de la machine voisine est vide</li>
+     * </ul>
+     * Les sous-classes peuvent redéfinir cette méthode pour ajouter des sorties supplémentaires
+     * (par exemple le {@link Decoupeur} envoie aussi par la gauche).
      */
-    public void send()
-    {
+    public void send() {
         Case up = c.plateau.getCase(c, d);
         if (up != null) {
             Machine m = up.getMachine();
@@ -108,16 +156,17 @@ public abstract class Machine implements Runnable {
     }
 
     /**
-     * Méthode permettant de faire tourner les objets sur eux même à chaque ticks
+     * Méthode permettant d'effectuer le travail spécifique de la machine sur l'item.
+     * Par défaut ne fait rien. Les sous-classes redéfinissent cette méthode pour implémenter
+     * leur logique de traitement (rotation de forme, découpe, mélange de couleurs, etc.).
      */
     public void work() {
-        //if (current.size() > 0 && current.get(0) instanceof ItemShape) {
-        //    ((ItemShape) current.get(0)).rotate();
-        //}
-    }; // action de la machine, aucune par défaut
+    }
 
     /**
-     * Redéfinition de la méthode run qui effectue le travail sur l'item et l'envoi à son prochain
+     * Méthode d'exécution appelée à chaque tick du jeu par {@link Plateau#run()}.
+     * Exécute le cycle complet de la machine : d'abord le traitement via {@link #work()},
+     * puis l'envoi de l'item via {@link #send()}.
      */
     @Override
     public void run() {
