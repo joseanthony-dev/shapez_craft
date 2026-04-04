@@ -1,3 +1,11 @@
+/**
+ * Fichier de classe définissant le composant graphique d'une case du plateau
+ * @author JOSE Anthony
+ * @since 2026-03-18
+ * @version 1.0
+ * @see vuecontroleur
+ * @see javax.swing.JPanel
+ */
 package vuecontroleur;
 
 import modele.item.ItemShape;
@@ -5,29 +13,106 @@ import modele.item.SubShape;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Classe ImagePanel héritante de {@link JPanel} représentant une case graphique du plateau.
+ * Chaque case peut afficher jusqu'à quatre couches visuelles superposées :
+ * <ol>
+ *     <li>Un arrière-plan ({@link #imgBackground}) : image du gisement ou de la machine</li>
+ *     <li>Un texte centré ({@link #texte}) : utilisé pour afficher le numéro de niveau sur la livraison</li>
+ *     <li>Un premier plan ({@link #imgFront}) : image de l'item couleur transporté par la machine</li>
+ *     <li>Une forme ({@link #shape}) : rendu graphique d'un {@link ItemShape} avec ses quadrants et couches</li>
+ * </ol>
+ * Le rendu des formes utilise {@link Graphics2D} avec antialiasing pour dessiner les 4 types de
+ * sous-formes ({@link SubShape}) : carré, cercle, étoile et éventail, chacune dans son quadrant.
+ * Les couches supérieures sont dessinées légèrement plus petites pour créer un effet de profondeur.
+ *
+ * @see VueControleur
+ * @see modele.item.ItemShape
+ * @see modele.item.SubShape
+ */
 public class ImagePanel extends JPanel {
-
+    /**
+     * @serial Image d'arrière-plan de la case, représente le gisement ou la machine posée.
+     *         Peut être null si la case est vide.
+     */
     private Image imgBackground;
+
+    /**
+     * @serial Image de premier plan de la case, représente l'item couleur ({@link modele.item.ItemColor})
+     *         actuellement transporté par la machine. Peut être null si aucun item couleur n'est présent.
+     */
     private Image imgFront;
+
+    /**
+     * @serial Forme colorée à dessiner sur la case via le rendu graphique par quadrants.
+     *         Utilisée pour afficher les {@link ItemShape} sur les gisements et les machines.
+     *         Peut être null si aucune forme n'est à afficher.
+     */
     private ItemShape shape;
+
+    /**
+     * @serial Texte à afficher centré sur la case en blanc et en gras.
+     *         Utilisé pour afficher le numéro de niveau sur la zone de {@link modele.plateau.Livraison}.
+     *         Peut être null si aucun texte n'est à afficher.
+     */
     private String texte;
 
+    /**
+     * Méthode permettant de définir la forme à dessiner sur la case
+     * @param _shape la forme colorée à afficher, ou null pour ne rien afficher
+     */
     public void setShape(ItemShape _shape) {
         shape = _shape;
     }
 
+    /**
+     * Méthode permettant de définir l'image d'arrière-plan de la case
+     * @param _imgBackground l'image de fond à afficher, ou null pour un fond vide
+     */
     public void setBackground(Image _imgBackground) {
         imgBackground = _imgBackground;
     }
 
+    /**
+     * Méthode permettant de définir l'image de premier plan de la case
+     * @param _imgFront l'image de premier plan à afficher, ou null pour ne rien afficher
+     */
     public void setFront(Image _imgFront) {
         imgFront = _imgFront;
     }
 
+    /**
+     * Méthode permettant de définir le texte à afficher centré sur la case
+     * @param _texte le texte à afficher, ou null pour ne rien afficher
+     */
     public void setTexte(String _texte) {
         texte = _texte;
     }
 
+    /**
+     * Méthode de rendu graphique redéfinie pour dessiner le contenu de la case.
+     * Le dessin s'effectue dans l'ordre suivant :
+     * <ol>
+     *     <li>Cadre arrondi autour de la case avec une bordure de 1 pixel</li>
+     *     <li>Image d'arrière-plan ({@link #imgBackground}) occupant toute la case</li>
+     *     <li>Texte centré ({@link #texte}) en blanc, police Arial gras 16px</li>
+     *     <li>Image de premier plan ({@link #imgFront}) centrée dans la moitié intérieure de la case</li>
+     *     <li>Forme colorée ({@link #shape}) dessinée quadrant par quadrant pour chaque couche</li>
+     * </ol>
+     * Pour le rendu des formes, chaque couche est dessinée avec un rayon légèrement réduit
+     * (4 pixels de moins par couche) pour créer un effet d'empilement visuel.
+     * Les 4 quadrants sont ordonnés : 0 = haut-droit, 1 = bas-droit, 2 = bas-gauche, 3 = haut-gauche.
+     * <p>
+     * Types de sous-formes rendus :
+     * <ul>
+     *     <li>{@link SubShape#Carre} : rectangle rempli dans le quadrant</li>
+     *     <li>{@link SubShape#Circle} : arc de 90 degrés clippé dans le quadrant</li>
+     *     <li>{@link SubShape#Star} : polygone à 4 sommets formant une branche d'étoile</li>
+     *     <li>{@link SubShape#Fan} : arc de 90 degrés décalé formant un éventail</li>
+     * </ul>
+     *
+     * @param g le contexte graphique fourni par Swing pour le dessin
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

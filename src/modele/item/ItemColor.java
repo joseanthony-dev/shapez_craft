@@ -59,19 +59,15 @@ public class ItemColor extends Item {
         if (add == Color.White || color == Color.White) {
             color = Color.White; return;
         }
-        // Rouge + Bleu = Violet
         if ((color == Color.Red && add == Color.Blue) || (color == Color.Blue && add == Color.Red)) {
             color = Color.Purple; return;
         }
-        // Rouge + Vert = Jaune
         if ((color == Color.Red && add == Color.Green) || (color == Color.Green && add == Color.Red)) {
             color = Color.Yellow; return;
         }
-        // Bleu + Vert = Cyan
         if ((color == Color.Blue && add == Color.Green) || (color == Color.Green && add == Color.Blue)) {
             color = Color.Cyan; return;
         }
-        // Toute autre combinaison => Blanc
         color = Color.White;
     }
 }
