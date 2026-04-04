@@ -8,7 +8,9 @@
 package modele.item;
 
 /**
- * Enumération permettant de stocker les types de formes
+ * Enumération permettant de stocker les types de sous-formes composant un quadrant d'un item.
+ * Chaque item est composé de 4 quadrants par couche, et chaque quadrant est une de ces sous-formes.
+ * Le codage en caractère est utilisé pour la sérialisation des formes en chaîne de caractères.
  */
 public enum SubShape {
     Circle, Carre, Fan, Star, None

@@ -8,17 +8,25 @@
 package modele.item;
 
 /**
- * Classe ItemColor éritante de Item permettant de définir les formes colorées
+ * Classe ItemColor héritante de Item permettant de définir un item de type couleur.
+ * Les ItemColor sont produits par les mines placées sur des gisements de couleur
+ * et sont utilisés par la machine {@link modele.plateau.Peinture} pour colorier les formes
+ * et par la machine {@link modele.plateau.Melangeur} pour créer de nouvelles couleurs.
+ *
+ * @see Item
+ * @see Color
+ * @see modele.plateau.Peinture
+ * @see modele.plateau.Melangeur
  */
 public class ItemColor extends Item {
     /**
-     * @serial Définit l'attribut couleur de la forme
+     * @serial Définit la couleur de l'item, correspondant à une valeur de l'énumération {@link Color}
      */
     Color color;
 
     /**
-     * Constructeur permettant d'initialiser un ItemColor
-     * @param color est la couleur de l'initialisation de l'item
+     * Constructeur permettant d'initialiser un ItemColor avec une couleur donnée
+     * @param color la couleur à attribuer à l'item, ne doit pas être null
      */
     public ItemColor(Color color){
         this.color=color;
@@ -26,15 +34,25 @@ public class ItemColor extends Item {
 
     /**
      * Fonction permettant de renvoyer la couleur actuelle de l'objet
-     * @return la couleur de l'item
+     * @return la couleur de l'item sous forme de valeur de l'énumération {@link Color}
      */
     public Color getColor(){
         return color;
     }
 
     /**
-     * Fonction utilisée par le mixer permettant de faire varier la couleur de l'objet selon les règles RGB
-     * @param add est la couleur que l'on veut mixer avec celle actuellement de l'item
+     * Méthode utilisée par le mélangeur permettant de transformer la couleur de l'item
+     * en la mélangeant avec une autre couleur selon les règles RGB suivantes :
+     * <ul>
+     *     <li>Rouge + Bleu = Violet</li>
+     *     <li>Rouge + Vert = Jaune</li>
+     *     <li>Bleu + Vert = Cyan</li>
+     *     <li>Blanc + n'importe quelle couleur = Blanc</li>
+     *     <li>Même couleur + même couleur = pas de changement</li>
+     *     <li>Toute autre combinaison = Blanc</li>
+     * </ul>
+     *
+     * @param add la couleur que l'on veut mélanger avec la couleur actuelle de l'item
      */
     public void transform(Color add) {
         if (add == color) return;
