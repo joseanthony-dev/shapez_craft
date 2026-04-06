@@ -32,6 +32,13 @@ import java.awt.*;
  */
 public class ImagePanel extends JPanel {
     /**
+     * Taille en pixels du côté de la case dans la grille.
+     * Cette valeur est modifiée dynamiquement par le zoom via {@link #setCellSize(int)}.
+     * Par défaut initialisée à 60 pixels.
+     */
+    private int cellSize = 60;
+
+    /**
      * @serial Image d'arrière-plan de la case, représente le gisement ou la machine posée.
      *         Peut être null si la case est vide.
      */
@@ -56,6 +63,22 @@ public class ImagePanel extends JPanel {
      *         Peut être null si aucun texte n'est à afficher.
      */
     private String texte;
+
+    /**
+     * Méthode permettant de modifier dynamiquement la taille d'affichage de la case.
+     * Met à jour la taille préférée du composant et force un recalcul du layout
+     * pour que le {@link javax.swing.JScrollPane} parent ajuste ses barres de défilement.
+     * Appelée par {@link vuecontroleur.VueControleur} lors d'un zoom à la molette.
+     *
+     * @param size la nouvelle taille en pixels du côté de la case (largeur = hauteur),
+     *             doit être comprise entre {@link vuecontroleur.VueControleur#CELL_SIZE_MIN}
+     *             et {@link vuecontroleur.VueControleur#CELL_SIZE_MAX}
+     */
+    public void setCellSize(int size) {
+        this.cellSize = size;
+        setPreferredSize(new Dimension(size, size));
+        revalidate();
+    }
 
     /**
      * Méthode permettant de définir la forme à dessiner sur la case

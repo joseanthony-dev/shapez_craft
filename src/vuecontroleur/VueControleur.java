@@ -22,6 +22,8 @@ import modele.item.ItemShape;
 import modele.jeu.Jeu;
 import modele.plateau.*;
 import modele.jeu.Outil;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 /**
  * Classe VueControleur héritante de {@link JFrame} et implémentant {@link Observer}.
@@ -42,6 +44,39 @@ import modele.jeu.Outil;
  * @see ImagePanel
  */
 public class VueControleur extends JFrame implements Observer {
+    /**
+     * Taille actuelle en pixels du côté de chaque case de la grille.
+     * Modifiée par le zoom (Ctrl + molette) et appliquée à tous les {@link ImagePanel}
+     * via {@link ImagePanel#setCellSize(int)}.
+     * Initialisée à 60 pixels par défaut.
+     */
+    private int cellSize = 60;
+
+    /**
+     * Taille minimale en pixels autorisée pour une case lors du dézoom.
+     * Empêche les cases de devenir trop petites pour être lisibles.
+     */
+    private static final int CELL_SIZE_MIN = 20;
+
+    /**
+     * Taille maximale en pixels autorisée pour une case lors du zoom.
+     * Empêche les cases de devenir trop grandes et de consommer trop de mémoire.
+     */
+    private static final int CELL_SIZE_MAX = 120;
+
+    /**
+     * Incrément en pixels appliqué à {@link #cellSize} à chaque cran de molette.
+     * Détermine la vitesse du zoom : une valeur plus grande donne un zoom plus rapide.
+     */
+    private static final int ZOOM_STEP = 5;
+
+    /**
+     * Panneau défilant contenant la grille de jeu {@link #grilleIP}.
+     * Permet de naviguer sur le plateau lorsque celui-ci dépasse la taille de la fenêtre,
+     * notamment après un zoom ou sur un plateau de grande taille.
+     * Les barres de défilement s'affichent automatiquement selon les besoins.
+     */
+    private JScrollPane scrollPane;
     /**
      * @serial Référence vers le plateau de jeu permettant d'accéder aux données du modèle
      *         pour le rafraîchissement et de communiquer les actions souris
@@ -371,7 +406,6 @@ public class VueControleur extends JFrame implements Observer {
     private void placerLesComposantsGraphiques() {
         setTitle("ShapeCraft JOSE Anthony");
         setResizable(true);
-        setSize(sizeX * pxCase, sizeX * pxCase);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         grilleIP = new JPanel(new GridLayout(sizeY, sizeX));
@@ -379,6 +413,7 @@ public class VueControleur extends JFrame implements Observer {
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
                 ImagePanel iP = new ImagePanel();
+                iP.setCellSize(cellSize);
                 tabIP[x][y] = iP;
                 final int xx = x;
                 final int yy = y;
@@ -521,7 +556,43 @@ public class VueControleur extends JFrame implements Observer {
 
         panneauOutils.setPreferredSize(new Dimension(250, 0));
         add(panneauOutils, BorderLayout.WEST);
-        add(grilleIP, BorderLayout.CENTER);
+        scrollPane = new JScrollPane(grilleIP);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+        add(scrollPane, BorderLayout.CENTER);
+
+        /**
+         * Écouteur de molette sur le panneau défilant permettant de zoomer et dézoomer sur la grille.
+         * Le zoom est activé uniquement si la touche Ctrl est maintenue enfoncée :
+         * <ul>
+         *     <li><b>Ctrl + molette haut</b> : augmente la taille des cases (zoom avant)</li>
+         *     <li><b>Ctrl + molette bas</b> : diminue la taille des cases (zoom arrière)</li>
+         * </ul>
+         * Sans Ctrl, le scroll normal du {@link JScrollPane} s'applique.
+         *
+         * @param e l'événement de molette contenant la direction de rotation
+         *          et l'état des modificateurs ({@link MouseWheelEvent#isControlDown()})
+         */
+        scrollPane.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if (e.isControlDown()) {
+                    e.consume();
+                    if (e.getWheelRotation() < 0) {
+                        cellSize = Math.min(cellSize + ZOOM_STEP, CELL_SIZE_MAX);
+                    } else {
+                        cellSize = Math.max(cellSize - ZOOM_STEP, CELL_SIZE_MIN);
+                    }
+                    for (int x = 0; x < sizeX; x++) {
+                        for (int y = 0; y < sizeY; y++) {
+                            tabIP[x][y].setCellSize(cellSize);
+                        }
+                    }
+                    grilleIP.revalidate();
+                    grilleIP.repaint();
+                }
+            }
+        });
     }
 
     /**

@@ -35,14 +35,19 @@ import modele.item.ItemShape;
  */
 public class Plateau extends Observable implements Runnable {
     /**
-     * Largeur du plateau en nombre de cases
+     * Largeur du plateau en nombre de cases.
+     * Définit le nombre de colonnes de la grille de jeu.
+     * Les gisements de couleur sont placés à la colonne {@code SIZE_X - 1} (49)
+     * et les gisements de forme à la colonne 0.
      */
-    public static final int SIZE_X = 16;
+    public static final int SIZE_X = 50;
 
     /**
-     * Hauteur du plateau en nombre de cases
+     * Hauteur du plateau en nombre de cases.
+     * Définit le nombre de lignes de la grille de jeu.
+     * Les gisements sont placés sur les 4 dernières lignes ({@code SIZE_Y - 4} à {@code SIZE_Y - 1}).
      */
-    public static final int SIZE_Y = 16;
+    public static final int SIZE_Y = 50;
 
     /**
      * @serial HashMap permettant de récupérer la position ({@link Point}) d'une case
