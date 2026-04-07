@@ -497,14 +497,15 @@ public class VueControleur extends JFrame implements Observer {
         JButton btnMelangeur = new JButton();
         JButton btnEmpileur = new JButton();
 
-        btnRotateur.setIcon(new ImageIcon("./data/sprites/buildings/rotater.png"));
-        btnTapis.setIcon(new ImageIcon("./data/sprites/buildings/belt_top.png"));
-        btnMine.setIcon(new ImageIcon("./data/sprites/buildings/miner.png"));
-        btnPoubelle.setIcon(new ImageIcon("./data/sprites/buildings/trash.png"));
-        btnDecoupeur.setIcon(new ImageIcon("./data/sprites/buildings/cutter.png"));
-        btnPeinture.setIcon(new ImageIcon("./data/sprites/buildings/painter.png"));
-        btnMelangeur.setIcon(new ImageIcon("./data/sprites/buildings/mixer.png"));
-        btnEmpileur.setIcon(new ImageIcon("./data/sprites/buildings/stacker.png"));
+        int btnIconSize = 170;
+        btnRotateur.setIcon(new ImageIcon(new ImageIcon("./data/sprites/buildings/rotater.png").getImage().getScaledInstance(btnIconSize, btnIconSize, java.awt.Image.SCALE_SMOOTH)));
+        btnTapis.setIcon(new ImageIcon(new ImageIcon("./data/sprites/buildings/belt_top.png").getImage().getScaledInstance(btnIconSize, btnIconSize, java.awt.Image.SCALE_SMOOTH)));
+        btnMine.setIcon(new ImageIcon(new ImageIcon("./data/sprites/buildings/miner.png").getImage().getScaledInstance(btnIconSize, btnIconSize, java.awt.Image.SCALE_SMOOTH)));
+        btnPoubelle.setIcon(new ImageIcon(new ImageIcon("./data/sprites/buildings/trash.png").getImage().getScaledInstance(btnIconSize, btnIconSize, java.awt.Image.SCALE_SMOOTH)));
+        btnDecoupeur.setIcon(new ImageIcon(new ImageIcon("./data/sprites/buildings/cutter.png").getImage().getScaledInstance(btnIconSize, btnIconSize, java.awt.Image.SCALE_SMOOTH)));
+        btnPeinture.setIcon(new ImageIcon(new ImageIcon("./data/sprites/buildings/painter.png").getImage().getScaledInstance(btnIconSize, btnIconSize, java.awt.Image.SCALE_SMOOTH)));
+        btnMelangeur.setIcon(new ImageIcon(new ImageIcon("./data/sprites/buildings/mixer.png").getImage().getScaledInstance(btnIconSize, btnIconSize, java.awt.Image.SCALE_SMOOTH)));
+        btnEmpileur.setIcon(new ImageIcon(new ImageIcon("./data/sprites/buildings/stacker.png").getImage().getScaledInstance(btnIconSize, btnIconSize, java.awt.Image.SCALE_SMOOTH)));
 
         btnTapis.addActionListener(e -> jeu.setOutilSelectionne(Outil.TAPIS));
         btnMine.addActionListener(e -> jeu.setOutilSelectionne(Outil.MINE));
@@ -554,7 +555,7 @@ public class VueControleur extends JFrame implements Observer {
         this.setUndecorated(true);
         this.setResizable(false);
 
-        panneauOutils.setPreferredSize(new Dimension(250, 0));
+        panneauOutils.setPreferredSize(new Dimension(200, 0));
         add(panneauOutils, BorderLayout.WEST);
         scrollPane = new JScrollPane(grilleIP);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
