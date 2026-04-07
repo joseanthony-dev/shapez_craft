@@ -26,4 +26,9 @@ public class Poubelle extends Machine {
     @Override
     public void send() {
     }
+
+    @Override
+    public void work() {
+        current.clear();
+    }
 }
